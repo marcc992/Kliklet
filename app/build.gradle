@@ -53,8 +53,12 @@ dependencies {
     annotationProcessor "com.github.bumptech.glide:compiler:$rootProject.ext.glideVersion"
 
     // Kotlin Coroutines
-    //implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.ext.coroutinesVersion"
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.ext.coroutinesVersion")
+
+    //Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$rootProject.ext.retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$rootProject.ext.retrofitVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.ext.okhttpVersion"
 
     // Test
     testImplementation "junit:junit:$rootProject.ext.jUnitVersion"

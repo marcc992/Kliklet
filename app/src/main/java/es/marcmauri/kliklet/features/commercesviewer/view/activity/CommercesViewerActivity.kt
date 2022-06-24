@@ -1,26 +1,26 @@
-package es.marcmauri.kliklet.features.storesviewer.view.activity
+package es.marcmauri.kliklet.features.commercesviewer.view.activity
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN
 import es.marcmauri.kliklet.app.KlikletApp
-import es.marcmauri.kliklet.databinding.ActivityStoresViewerBinding
-import es.marcmauri.kliklet.features.storesviewer.view.fragment.StoresViewerListFragment
+import es.marcmauri.kliklet.databinding.ActivityCommercesViewerBinding
+import es.marcmauri.kliklet.features.commercesviewer.view.fragment.CommercesViewerListFragment
 
-class StoresViewerActivity : FragmentActivity() {
+class CommercesViewerActivity : FragmentActivity() {
 
-    private lateinit var binding: ActivityStoresViewerBinding
-    private val storesViewerListFragment by lazy { StoresViewerListFragment() }
+    private lateinit var binding: ActivityCommercesViewerBinding
+    private val commercesViewerListFragment by lazy { CommercesViewerListFragment() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityStoresViewerBinding.inflate(layoutInflater)
+        binding = ActivityCommercesViewerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         (application as KlikletApp).getComponent().inject(this)
 
-        loadFragment(storesViewerListFragment)
+        loadFragment(commercesViewerListFragment)
     }
 
     private fun loadFragment(fragment: Fragment) {
@@ -28,12 +28,12 @@ class StoresViewerActivity : FragmentActivity() {
             val transaction = supportFragmentManager.beginTransaction()
 
             // When we try to load a different fragment than the list, it means we are opening
-            // a store detail fragment. In this case we hide the list fragment to not lose its
+            // a commerce detail fragment. In this case we hide the list fragment to not lose its
             // contents and view
-            if (fragment !is StoresViewerListFragment) {
+            if (fragment !is CommercesViewerListFragment) {
                 transaction
                     .addToBackStack(null)
-                    .hide(storesViewerListFragment)
+                    .hide(commercesViewerListFragment)
             }
 
             transaction

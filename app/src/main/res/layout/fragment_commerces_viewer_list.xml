@@ -5,11 +5,11 @@
     android:id="@+id/root_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".features.storesviewer.view.fragment.StoresViewerListFragment">
+    tools:context=".features.commercesviewer.view.fragment.CommercesViewerListFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView_storeList"
-        android:name="es.marcmauri.kliklet.features.stores.view.fragment.StoreListFragment"
+        android:id="@+id/recyclerView_commerceList"
+        android:name="es.marcmauri.kliklet.features.commercesviewer.view.fragment.CommercesViewerListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="16dp"
@@ -20,7 +20,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/recycler_store_list_item" />
+        tools:listitem="@layout/recycler_commerce_list_item" />
 
     <ProgressBar
         android:id="@+id/progressBar_loading"

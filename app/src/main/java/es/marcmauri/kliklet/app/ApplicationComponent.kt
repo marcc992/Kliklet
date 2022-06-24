@@ -1,19 +1,21 @@
 package es.marcmauri.kliklet.app
 
 import dagger.Component
-import es.marcmauri.kliklet.features.storesviewer.view.activity.StoresViewerActivity
-import es.marcmauri.kliklet.features.storesviewer.StoresViewerModule
-import es.marcmauri.kliklet.features.storesviewer.view.fragment.StoresViewerListFragment
+import es.marcmauri.kliklet.features.commercesviewer.CommercesViewerModule
+import es.marcmauri.kliklet.features.commercesviewer.view.activity.CommercesViewerActivity
+import es.marcmauri.kliklet.features.commercesviewer.view.fragment.CommercesViewerListFragment
+import es.marcmauri.kliklet.retrofit.CommercesApiModule
 import javax.inject.Singleton
 
 @Singleton
 @Component(
     modules = [
         ApplicationModule::class,
-        StoresViewerModule::class
+        CommercesViewerModule::class,
+        CommercesApiModule::class
     ]
 )
 interface ApplicationComponent {
-    fun inject(storesViewerActivity: StoresViewerActivity)
-    fun inject(storesViewerListFragment: StoresViewerListFragment)
+    fun inject(commercesViewerActivity: CommercesViewerActivity)
+    fun inject(commercesViewerListFragment: CommercesViewerListFragment)
 }

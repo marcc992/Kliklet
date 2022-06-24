@@ -19,6 +19,8 @@ buildscript {
         daggerVersion = "2.42"
         glideVersion = "4.13.0"
         coroutinesVersion = "1.3.9"
+        retrofitVersion = "2.9.0"
+        okhttpVersion = "4.2.1"
         jUnitVersion = "4.13.2"
         androidXTestJUnitVersion = "1.1.3"
         androidXTestEspressoVersion = "3.4.0"

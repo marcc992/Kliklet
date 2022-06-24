@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/cv_storeItem"
+    android:id="@+id/cv_commerceItem"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="8dp"
@@ -22,7 +21,7 @@
         android:paddingBottom="16dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout_storeItemHeader"
+            android:id="@+id/constraintLayout_commerceItemHeader"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:background="@android:color/holo_red_light"
@@ -31,7 +30,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/iv_storeSymbol"
+                android:id="@+id/iv_commerceSymbol"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_marginStart="16dp"
@@ -41,7 +40,7 @@
                 app:srcCompat="@drawable/ic_ees_white" />
 
             <TextView
-                android:id="@+id/tv_storeDistance"
+                android:id="@+id/tv_commerceDistance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
@@ -66,44 +65,46 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ImageView
-            android:id="@+id/iv_storeImage"
+            android:id="@+id/iv_commerceImage"
             android:layout_width="84dp"
             android:layout_height="84dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout_storeItemHeader"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout_commerceItemHeader"
             app:srcCompat="@drawable/ic_placeholder" />
 
         <TextView
-            android:id="@+id/tv_storeName"
+            android:id="@+id/tv_commerceName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:maxLines="1"
-            android:text="Lorem ipsum"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum "
             android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/iv_storeImage"
-            app:layout_constraintTop_toTopOf="@+id/iv_storeImage" />
+            app:layout_constraintStart_toEndOf="@+id/iv_commerceImage"
+            app:layout_constraintTop_toTopOf="@+id/iv_commerceImage" />
 
         <TextView
-            android:id="@+id/tv_storeDescription"
+            android:id="@+id/tv_commerceDescription"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-            android:maxLines="1"
-            android:text="Lorem ipsum dolor"
+            android:ellipsize="end"
+            android:maxLines="4"
+            android:text="Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor "
             android:textColor="@color/black"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_storeImage"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/iv_storeImage" />
+            app:layout_constraintStart_toEndOf="@+id/iv_commerceImage"
+            app:layout_constraintTop_toBottomOf="@+id/tv_commerceName" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
