@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Kliklet</string>
+    <string name="activity_commerces_viewer_toolbar_title">Listado de comercios</string>
 </resources>
