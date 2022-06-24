@@ -1,7 +1,7 @@
 package es.marcmauri.kliklet.app
 
 import android.app.Application
-import es.marcmauri.kliklet.features.stores.StoresModule
+import es.marcmauri.kliklet.features.storesviewer.StoresViewerModule
 
 class KlikletApp : Application() {
 
@@ -11,7 +11,7 @@ class KlikletApp : Application() {
         super.onCreate()
 
         component = DaggerApplicationComponent.builder()
-            .storesModule(StoresModule())
+            .storesViewerModule(StoresViewerModule())
             .build()
     }
 

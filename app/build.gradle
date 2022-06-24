@@ -45,8 +45,12 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:$rootProject.ext.androidXConstraintLayoutVersion"
 
     // Dagger
-    kapt "com.google.dagger:dagger-compiler:$rootProject.ext.daggerVersion"
     implementation "com.google.dagger:dagger:$rootProject.ext.daggerVersion"
+    kapt "com.google.dagger:dagger-compiler:$rootProject.ext.daggerVersion"
+
+    // Glide
+    implementation "com.github.bumptech.glide:glide:$rootProject.ext.glideVersion"
+    annotationProcessor "com.github.bumptech.glide:compiler:$rootProject.ext.glideVersion"
 
     // Test
     testImplementation "junit:junit:$rootProject.ext.jUnitVersion"
