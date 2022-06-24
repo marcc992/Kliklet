@@ -3,7 +3,7 @@ package es.marcmauri.kliklet.app
 import dagger.Component
 import es.marcmauri.kliklet.features.storesviewer.view.activity.StoresViewerActivity
 import es.marcmauri.kliklet.features.storesviewer.StoresViewerModule
-import es.marcmauri.kliklet.features.storesviewer.view.fragment.StoreListFragment
+import es.marcmauri.kliklet.features.storesviewer.view.fragment.StoresViewerListFragment
 import javax.inject.Singleton
 
 @Singleton
@@ -15,5 +15,5 @@ import javax.inject.Singleton
 )
 interface ApplicationComponent {
     fun inject(storesViewerActivity: StoresViewerActivity)
-    fun inject(storeListFragment: StoreListFragment)
+    fun inject(storesViewerListFragment: StoresViewerListFragment)
 }

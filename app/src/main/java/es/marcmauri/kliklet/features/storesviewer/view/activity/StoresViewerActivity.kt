@@ -6,12 +6,12 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN
 import es.marcmauri.kliklet.app.KlikletApp
 import es.marcmauri.kliklet.databinding.ActivityStoresViewerBinding
-import es.marcmauri.kliklet.features.storesviewer.view.fragment.StoreListFragment
+import es.marcmauri.kliklet.features.storesviewer.view.fragment.StoresViewerListFragment
 
 class StoresViewerActivity : FragmentActivity() {
 
     private lateinit var binding: ActivityStoresViewerBinding
-    private val storeListFragment by lazy { StoreListFragment() }
+    private val storesViewerListFragment by lazy { StoresViewerListFragment() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,7 +20,7 @@ class StoresViewerActivity : FragmentActivity() {
 
         (application as KlikletApp).getComponent().inject(this)
 
-        loadFragment(storeListFragment)
+        loadFragment(storesViewerListFragment)
     }
 
     private fun loadFragment(fragment: Fragment) {
@@ -30,10 +30,10 @@ class StoresViewerActivity : FragmentActivity() {
             // When we try to load a different fragment than the list, it means we are opening
             // a store detail fragment. In this case we hide the list fragment to not lose its
             // contents and view
-            if (fragment !is StoreListFragment) {
+            if (fragment !is StoresViewerListFragment) {
                 transaction
                     .addToBackStack(null)
-                    .hide(storeListFragment)
+                    .hide(storesViewerListFragment)
             }
 
             transaction

@@ -7,23 +7,22 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import es.marcmauri.kliklet.R
-import es.marcmauri.kliklet.databinding.RecyclerStoreItemBinding
+import es.marcmauri.kliklet.databinding.RecyclerStoreListItemBinding
 import es.marcmauri.kliklet.features.storesviewer.view.fragment.placeholder.PlaceholderContent.PlaceholderItem
+import es.marcmauri.kliklet.features.storesviewer.view.listener.RecyclerStoresViewerListListener
 
-/**
- * [RecyclerView.Adapter] that can display a [PlaceholderItem].
- * TODO: Replace the implementation with code for your data type.
- */
-class StoreListAdapter(
-    private val values: List<PlaceholderItem>
-) : RecyclerView.Adapter<StoreListAdapter.ViewHolder>() {
+
+class StoresViewerListAdapter(
+    private val values: List<PlaceholderItem>,
+    private val listener: RecyclerStoresViewerListListener
+) : RecyclerView.Adapter<StoresViewerListAdapter.ViewHolder>() {
 
     private lateinit var context: Context
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         context = parent.context
         return ViewHolder(
-            RecyclerStoreItemBinding.inflate(
+            RecyclerStoreListItemBinding.inflate(
                 LayoutInflater.from(context),
                 parent,
                 false
@@ -34,6 +33,10 @@ class StoreListAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
+
+        holder.itemView.setOnClickListener {
+            listener.onPhotoItemClick(item.id, position)
+        }
 
         // todo: determine store symbol
         when (System.nanoTime() % 3) {
@@ -70,7 +73,7 @@ class StoreListAdapter(
 
     override fun getItemCount(): Int = values.size
 
-    inner class ViewHolder(binding: RecyclerStoreItemBinding) :
+    inner class ViewHolder(binding: RecyclerStoreListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         val constraintLayoutStoreItemHeader = binding.constraintLayoutStoreItemHeader
         val ivStoreSymbol = binding.ivStoreSymbol
