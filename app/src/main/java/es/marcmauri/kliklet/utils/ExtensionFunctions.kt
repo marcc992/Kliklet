@@ -25,3 +25,7 @@ fun Fragment.snackBar(
     }
     snackBar.show()
 }
+
+fun String.asSentence() =
+    if (this.isNotEmpty()) this.first().uppercaseChar() + this.substring(1).lowercase()
+    else this

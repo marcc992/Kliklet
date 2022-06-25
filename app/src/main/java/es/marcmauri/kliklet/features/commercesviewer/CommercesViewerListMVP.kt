@@ -13,7 +13,7 @@ interface CommercesViewerListMVP {
     interface View {
         fun configureUI()
         fun showButtonList(newButtonsList: List<ButtonInfo>)
-        fun showCategoryList()
+        fun showCategoryList(newCategoriesList: List<String>)
         fun showCommerceList(newCommerceList: List<Commerce>)
         fun goToCommerceDetails(commerce: Commerce)
         fun showLoading()
@@ -26,7 +26,7 @@ interface CommercesViewerListMVP {
         fun setView(view: View)
         fun onFragmentReady()
         fun onButtonItemClick(buttonInfo: ButtonInfo)
-        fun onCategoryItemClick()
+        fun onCategoryItemClick(category: String)
         fun onCommerceItemClick(commerce: Commerce)
     }
 }

@@ -5,18 +5,19 @@ import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import es.marcmauri.kliklet.R
-import es.marcmauri.kliklet.databinding.RecyclerCommerceListItemBinding
-import es.marcmauri.kliklet.features.commercesviewer.model.entities.Commerce
-import es.marcmauri.kliklet.features.commercesviewer.view.listener.RecyclerCommercesViewerListListener
+import es.marcmauri.kliklet.databinding.RecyclerCategoryListItemBinding
+import es.marcmauri.kliklet.features.commercesviewer.view.listener.RecyclerCategoriesViewerListListener
 import es.marcmauri.kliklet.utils.Constants
+import es.marcmauri.kliklet.utils.asSentence
 
 
 class CategoriesViewerListAdapter(
-    private val commerceList: List<Commerce>,
-    private val listener: RecyclerCommercesViewerListListener
+    private val categoryList: List<String>,
+    private val listener: RecyclerCategoriesViewerListListener
 ) : RecyclerView.Adapter<CategoriesViewerListAdapter.ViewHolder>() {
 
     private lateinit var context: Context
@@ -24,7 +25,7 @@ class CategoriesViewerListAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         context = parent.context
         return ViewHolder(
-            RecyclerCommerceListItemBinding.inflate(
+            RecyclerCategoryListItemBinding.inflate(
                 LayoutInflater.from(context),
                 parent,
                 false
@@ -33,94 +34,61 @@ class CategoriesViewerListAdapter(
 
     }
 
-    private fun getHeaderColorByCategory(category: String): Drawable =
+    private fun getTextColorByCategory(category: String): Int =
         when (category) {
             Constants.Category.BEAUTY ->
-                AppCompatResources.getDrawable(context, R.color.category_beauty)!!
+                ContextCompat.getColor(context, R.color.category_beauty)
             Constants.Category.FOOD ->
-                AppCompatResources.getDrawable(context, R.color.category_food)!!
+                ContextCompat.getColor(context, R.color.category_food)
             Constants.Category.LEISURE ->
-                AppCompatResources.getDrawable(context, R.color.category_leisure)!!
+                ContextCompat.getColor(context, R.color.category_leisure)
             Constants.Category.SHOPPING ->
-                AppCompatResources.getDrawable(context, R.color.category_shopping)!!
+                ContextCompat.getColor(context, R.color.category_shopping)
             else ->
-                AppCompatResources.getDrawable(context, R.color.category_other)!!
+                ContextCompat.getColor(context, R.color.category_other)
         }
 
     private fun getCategorySymbol(category: String): Drawable =
         when (category) {
             Constants.Category.BEAUTY ->
-                AppCompatResources.getDrawable(context, R.drawable.ic_car_wash_white)!!
+                AppCompatResources.getDrawable(context, R.drawable.ic_car_wash_colour)!!
             Constants.Category.FOOD ->
-                AppCompatResources.getDrawable(context, R.drawable.ic_catering_white)!!
+                AppCompatResources.getDrawable(context, R.drawable.ic_catering_colour)!!
             Constants.Category.LEISURE ->
-                AppCompatResources.getDrawable(context, R.drawable.ic_leisure_white)!!
+                AppCompatResources.getDrawable(context, R.drawable.ic_leisure_colour)!!
             Constants.Category.SHOPPING ->
-                AppCompatResources.getDrawable(context, R.drawable.ic_cart_white)!!
+                AppCompatResources.getDrawable(context, R.drawable.ic_cart_colour)!!
             else ->
                 AppCompatResources.getDrawable(
                     context,
-                    R.drawable.ic_payment_regulated_parking_white
+                    R.drawable.ic_payment_regulated_parking_colour
                 )!!
         }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val currentCommerce = commerceList[position]
+        val currentCategory = categoryList[position]
 
         holder.itemView.setOnClickListener {
-            listener.onPhotoItemClick(currentCommerce, position)
+            listener.onCategoryItemClick(currentCategory, position)
         }
 
-        // Set header color by category
-        holder.constraintLayoutCommerceItemHeader.background =
-            getHeaderColorByCategory(currentCommerce.category ?: Constants.Category.OTHER)
+        // Set category name
+        holder.tvCategoryName.text = currentCategory.asSentence()
 
-        // Set category image
+        // Set text color by category
+        holder.tvCategoryName.setTextColor(getTextColorByCategory(currentCategory))
+
+        // Set category symbol
         Glide.with(context)
-            .load(getCategorySymbol(currentCommerce.category ?: Constants.Category.OTHER))
-            .into(holder.ivCommerceSymbol)
-
-        // Set commerce thumbnail
-        Glide.with(context)
-            .load(currentCommerce.logo?.thumbnails?.small)
-            .placeholder(AppCompatResources.getDrawable(context, R.drawable.ic_placeholder))
-            .into(holder.ivCommerceImage)
-
-        // TODO: Encontrar la manera de que el Recycler no lo borre sin necesitar este codigo:
-        Glide.with(context)
-            .load(AppCompatResources.getDrawable(context, R.drawable.ic_arrow_right_white))
-            .into(holder.ivArrowRight)
-
-        // todo: determine Commerce distance
-        holder.tvCommerceDistance.text = "300m."
-
-        // Set comerce title and description
-        holder.tvCommerceName.text = currentCommerce.name
-        holder.tvCommerceDescription.text = currentCommerce.description
+            .load(getCategorySymbol(currentCategory))
+            .into(holder.ivCategorySymbol)
     }
 
-    override fun getItemCount(): Int = commerceList.size
+    override fun getItemCount(): Int = categoryList.size
 
-    inner class ViewHolder(binding: RecyclerCommerceListItemBinding) :
+    inner class ViewHolder(binding: RecyclerCategoryListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        val constraintLayoutCommerceItemHeader = binding.constraintLayoutCommerceItemHeader
-        val ivCommerceSymbol = binding.ivCommerceSymbol
-        val tvCommerceDistance = binding.tvCommerceDistance
-        val ivCommerceImage = binding.ivCommerceImage
-        val tvCommerceName = binding.tvCommerceName
-        val tvCommerceDescription = binding.tvCommerceDescription
-        val ivArrowRight = binding.ivArrowRight
-
-
-        override fun toString(): String {
-            return "ViewHolder(" +
-                    "constraintLayoutCommerceItemHeader=$constraintLayoutCommerceItemHeader, " +
-                    "ivCommerceSymbol=$ivCommerceSymbol, " +
-                    "tvCommerceDistance=$tvCommerceDistance, " +
-                    "ivCommerceImage=$ivCommerceImage, " +
-                    "tvCommerceName=$tvCommerceName, " +
-                    "tvCommerceDescription=$tvCommerceDescription, " +
-                    "ivArrowRight=$ivArrowRight)"
-        }
+        val ivCategorySymbol = binding.ivCategorySymbol
+        val tvCategoryName = binding.tvCategoryName
     }
 }

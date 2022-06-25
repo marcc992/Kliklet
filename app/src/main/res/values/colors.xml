@@ -12,6 +12,7 @@
     <color name="button_blue_dark">#041E42</color>
     <color name="text_orange">#FF6200</color>
     <color name="text_gray">#757575</color>
+    <color name="text_gray_dark">#464646</color>
     <color name="category_beauty">#00A074</color>
     <color name="category_food">#FFC800</color>
     <color name="category_leisure">#9538DE</color>

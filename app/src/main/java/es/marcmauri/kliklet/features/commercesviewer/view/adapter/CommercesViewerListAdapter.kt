@@ -110,17 +110,5 @@ class CommercesViewerListAdapter(
         val tvCommerceName = binding.tvCommerceName
         val tvCommerceDescription = binding.tvCommerceDescription
         val ivArrowRight = binding.ivArrowRight
-
-
-        override fun toString(): String {
-            return "ViewHolder(" +
-                    "constraintLayoutCommerceItemHeader=$constraintLayoutCommerceItemHeader, " +
-                    "ivCommerceSymbol=$ivCommerceSymbol, " +
-                    "tvCommerceDistance=$tvCommerceDistance, " +
-                    "ivCommerceImage=$ivCommerceImage, " +
-                    "tvCommerceName=$tvCommerceName, " +
-                    "tvCommerceDescription=$tvCommerceDescription, " +
-                    "ivArrowRight=$ivArrowRight)"
-        }
     }
 }

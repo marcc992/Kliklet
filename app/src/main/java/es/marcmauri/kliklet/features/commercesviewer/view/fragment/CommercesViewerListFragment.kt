@@ -13,8 +13,10 @@ import es.marcmauri.kliklet.features.commercesviewer.CommercesViewerListMVP
 import es.marcmauri.kliklet.features.commercesviewer.model.entities.ButtonInfo
 import es.marcmauri.kliklet.features.commercesviewer.model.entities.Commerce
 import es.marcmauri.kliklet.features.commercesviewer.view.adapter.ButtonsViewerListAdapter
+import es.marcmauri.kliklet.features.commercesviewer.view.adapter.CategoriesViewerListAdapter
 import es.marcmauri.kliklet.features.commercesviewer.view.adapter.CommercesViewerListAdapter
 import es.marcmauri.kliklet.features.commercesviewer.view.listener.RecyclerButtonsViewerListListener
+import es.marcmauri.kliklet.features.commercesviewer.view.listener.RecyclerCategoriesViewerListListener
 import es.marcmauri.kliklet.features.commercesviewer.view.listener.RecyclerCommercesViewerListListener
 import es.marcmauri.kliklet.utils.snackBar
 import javax.inject.Inject
@@ -25,9 +27,12 @@ class CommercesViewerListFragment : Fragment(), CommercesViewerListMVP.View {
     @Inject
     lateinit var presenter: CommercesViewerListMVP.Presenter
     private lateinit var binding: FragmentCommercesViewerListBinding
+
     private lateinit var buttonsAdapter: ButtonsViewerListAdapter
+    private lateinit var categoriesAdapter: CategoriesViewerListAdapter
     private lateinit var commercesAdapter: CommercesViewerListAdapter
     private var buttonList: ArrayList<ButtonInfo> = ArrayList(0)
+    private var categoryList: ArrayList<String> = ArrayList(0)
     private var commerceList: ArrayList<Commerce> = ArrayList(0)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,6 +59,7 @@ class CommercesViewerListFragment : Fragment(), CommercesViewerListMVP.View {
 
     override fun configureUI() {
         setButtonsAdapter()
+        setCategoriesAdapter()
         setCommerceAdapter()
         setRecyclerViews()
     }
@@ -65,6 +71,17 @@ class CommercesViewerListFragment : Fragment(), CommercesViewerListMVP.View {
                     presenter.onButtonItemClick(buttonInfo)
                 }
             })
+    }
+
+    private fun setCategoriesAdapter() {
+        categoriesAdapter =
+            CategoriesViewerListAdapter(
+                categoryList,
+                object : RecyclerCategoriesViewerListListener {
+                    override fun onCategoryItemClick(category: String, position: Int) {
+                        presenter.onCategoryItemClick(category)
+                    }
+                })
     }
 
     private fun setCommerceAdapter() {
@@ -80,8 +97,15 @@ class CommercesViewerListFragment : Fragment(), CommercesViewerListMVP.View {
     private fun setRecyclerViews() {
         // Buttons recycler view
         binding.recyclerViewButtonList.itemAnimator = DefaultItemAnimator()
-        binding.recyclerViewButtonList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        binding.recyclerViewButtonList.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         binding.recyclerViewButtonList.adapter = buttonsAdapter
+
+        // Categories recycler view
+        binding.recyclerViewCategoryList.itemAnimator = DefaultItemAnimator()
+        binding.recyclerViewCategoryList.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        binding.recyclerViewCategoryList.adapter = categoriesAdapter
 
         // Commerces recycler view
         binding.recyclerViewCommerceList.itemAnimator = DefaultItemAnimator()
@@ -98,8 +122,13 @@ class CommercesViewerListFragment : Fragment(), CommercesViewerListMVP.View {
         }
     }
 
-    override fun showCategoryList() {
-        TODO("Not yet implemented")
+    override fun showCategoryList(newCategoriesList: List<String>) {
+        newCategoriesList.forEach { category ->
+            categoryList.add(category)
+            binding.recyclerViewCategoryList.post {
+                categoriesAdapter.notifyItemInserted(categoryList.size - 1)
+            }
+        }
     }
 
     override fun showCommerceList(newCommerceList: List<Commerce>) {

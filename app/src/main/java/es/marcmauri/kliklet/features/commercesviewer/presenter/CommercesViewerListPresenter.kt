@@ -54,6 +54,12 @@ class CommercesViewerListPresenter(val model: CommercesViewerListMVP.Model) :
         return buttonInfoList
     }
 
+    private fun getCategoryList(commerceList: List<Commerce>?): List<String> {
+        val categoriesMap = HashMap<String, Boolean>(0)
+        commerceList?.forEach { categoriesMap[it.category] = true}
+        return categoriesMap.keys.toList()
+    }
+
     private fun getCommercesFromAPI() {
         CoroutineScope(Dispatchers.IO).launch {
             withContext(Dispatchers.Main) {
@@ -63,10 +69,12 @@ class CommercesViewerListPresenter(val model: CommercesViewerListMVP.Model) :
             // Background work
             val commerceList = model.getAllCommerces()
             val buttonList = getButtonInfoList(commerceList)
+            val categoryList = getCategoryList(commerceList)
 
             withContext(Dispatchers.Main) {
                 view?.let { v ->
                     v.showButtonList(buttonList)
+                    v.showCategoryList(categoryList)
                     v.hideLoading()
                     when {
                         commerceList == null -> v.showError("An error occurs fetching data from server")
@@ -83,7 +91,7 @@ class CommercesViewerListPresenter(val model: CommercesViewerListMVP.Model) :
         view?.showError("TODO(\"onButtonItemClick Not yet implemented\")")
     }
 
-    override fun onCategoryItemClick() {
+    override fun onCategoryItemClick(category: String) {
         view?.showError("TODO(\"onCategoryItemClick Not yet implemented\")")
     }
 
