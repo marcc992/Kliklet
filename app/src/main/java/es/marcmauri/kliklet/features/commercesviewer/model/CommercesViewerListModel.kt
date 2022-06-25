@@ -21,9 +21,12 @@ class CommercesViewerListModel(private val repository: CommercesRepository) :
                 .filterNot { apiCommerce ->
                     // Filter the "invalid" commerces which should not be shown
                     apiCommerce.name.isNullOrEmpty()
-                            || apiCommerce.name!!.lowercase().contains("error")
-                            || apiCommerce.name!!.lowercase().contains("antiguo")
-                            || apiCommerce.name!!.lowercase().contains("cerrado")
+                            || apiCommerce.name!!.lowercase().contains("* error")
+                            || apiCommerce.name!!.lowercase().contains("*error")
+                            || apiCommerce.name!!.lowercase().contains("* antiguo")
+                            || apiCommerce.name!!.lowercase().contains("*antiguo")
+                            || apiCommerce.name!!.lowercase().contains("* cerrado")
+                            || apiCommerce.name!!.lowercase().contains("*cerrado")
                 }
                 .map { apiCommerce ->
                     Commerce(
