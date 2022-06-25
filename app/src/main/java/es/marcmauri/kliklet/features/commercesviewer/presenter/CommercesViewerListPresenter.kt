@@ -16,6 +16,7 @@ class CommercesViewerListPresenter(val model: CommercesViewerListMVP.Model) :
 
     @Nullable
     private var context: Context? = null
+    @Nullable
     private var view: CommercesViewerListMVP.View? = null
 
     override fun setContext(ctx: Context) {

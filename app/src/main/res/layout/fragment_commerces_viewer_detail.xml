@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_gray"
+    tools:context=".features.commercesviewer.view.fragment.CommercesViewerDetailFragment">
+
+    <ProgressBar
+        android:id="@+id/progressBar_loading"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_commerceDetailImage"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:clickable="false"
+        android:focusable="false"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/iv_commerceDetailImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/text_gray"
+            android:src="@drawable/ic_only_image" />
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/tv_locationTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:text="@string/fragment_commerce_detail_title_location"
+        android:textColor="@color/text_gray_dark"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/cv_commerceDetailImage"
+        app:layout_constraintTop_toBottomOf="@+id/cv_commerceDetailImage" />
+
+    <TextView
+        android:id="@+id/tv_bringMeThereTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fragment_commerce_detail_title_bring_me_there"
+        android:textColor="@color/text_cyan"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_locationTitle"
+        app:layout_constraintEnd_toEndOf="@+id/cv_commerceDetailImage"
+        app:layout_constraintTop_toTopOf="@+id/tv_locationTitle" />
+
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/mapView"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_locationTitle" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_commerceDetailedMap"
+        android:layout_width="0dp"
+        android:layout_height="140dp"
+        android:layout_marginTop="36dp"
+        android:background="@color/white"
+        android:clickable="false"
+        android:focusable="false"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="1dp"
+        app:layout_constraintEnd_toEndOf="@+id/cv_commerceDetailImage"
+        app:layout_constraintStart_toStartOf="@+id/cv_commerceDetailImage"
+        app:layout_constraintTop_toBottomOf="@id/mapView">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/iv_commerceThumb"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:background="@color/background_gray"
+                android:src="@drawable/ic_placeholder"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_mapDetailTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="Lorem ipsum"
+                android:textColor="@color/text_gray_dark"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/iv_commerceThumb"
+                app:layout_constraintTop_toTopOf="@+id/iv_commerceThumb" />
+
+            <TextView
+                android:id="@+id/tv_mapDetailSubtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Lorem ipsum"
+                android:textColor="@color/text_gray_dark"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/tv_mapDetailTitle"
+                app:layout_constraintTop_toBottomOf="@+id/tv_mapDetailTitle" />
+
+            <TextView
+                android:id="@+id/tv_mapDetailCoords"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Lorem ipsum"
+                android:textColor="@color/text_gray_dark"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@+id/tv_mapDetailSubtitle"
+                app:layout_constraintTop_toBottomOf="@+id/tv_mapDetailSubtitle" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/tv_aboutCommerceTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:text="@string/fragment_commerce_detail_title_about_commerce"
+        android:textColor="@color/text_gray_dark"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/cv_commerceDetailedMap"
+        app:layout_constraintTop_toBottomOf="@+id/cv_commerceDetailedMap" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_commerceDetailedInfo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="36dp"
+        android:background="@color/white"
+        android:clickable="false"
+        android:focusable="false"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="1dp"
+        app:layout_constraintEnd_toEndOf="@+id/cv_commerceDetailedMap"
+        app:layout_constraintStart_toStartOf="@+id/cv_commerceDetailedMap"
+        app:layout_constraintTop_toBottomOf="@id/tv_aboutCommerceTitle">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv__commerceDetailedInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eis bla bla bla Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eis bla bla bla Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eis bla bla bla "
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

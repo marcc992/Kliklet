@@ -12,6 +12,7 @@ import es.marcmauri.kliklet.databinding.FragmentCommercesViewerListBinding
 import es.marcmauri.kliklet.features.commercesviewer.CommercesViewerListMVP
 import es.marcmauri.kliklet.features.commercesviewer.model.entities.ButtonInfo
 import es.marcmauri.kliklet.features.commercesviewer.model.entities.Commerce
+import es.marcmauri.kliklet.features.commercesviewer.view.activity.CommercesViewerActivity
 import es.marcmauri.kliklet.features.commercesviewer.view.adapter.ButtonsViewerListAdapter
 import es.marcmauri.kliklet.features.commercesviewer.view.adapter.CategoriesViewerListAdapter
 import es.marcmauri.kliklet.features.commercesviewer.view.adapter.CommercesViewerListAdapter
@@ -87,8 +88,7 @@ class CommercesViewerListFragment : Fragment(), CommercesViewerListMVP.View {
     private fun setCommerceAdapter() {
         commercesAdapter =
             CommercesViewerListAdapter(commerceList, object : RecyclerCommercesViewerListListener {
-                override fun onPhotoItemClick(commerce: Commerce, position: Int) {
-                    // todo: position sirve para algo?
+                override fun onCommerceItemClick(commerce: Commerce, position: Int) {
                     presenter.onCommerceItemClick(commerce)
                 }
             })
@@ -141,7 +141,7 @@ class CommercesViewerListFragment : Fragment(), CommercesViewerListMVP.View {
     }
 
     override fun goToCommerceDetails(commerce: Commerce) {
-        showError("It is time to go to ${commerce.name} (Cat: ${commerce.category}) commerce detail!")
+        (activity as CommercesViewerActivity).loadFragment(CommercesViewerDetailFragment.newInstance(commerce))
     }
 
     override fun showLoading() {

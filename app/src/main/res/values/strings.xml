@@ -1,6 +1,12 @@
 <resources>
     <string name="app_name">Kliklet</string>
+
     <string name="activity_commerces_viewer_toolbar_title">Listado de comercios</string>
+
+    <string name="fragment_commerce_detail_title_location">Localizacion</string>
+    <string name="fragment_commerce_detail_title_bring_me_there">Llevame aqui</string>
+    <string name="fragment_commerce_detail_title_about_commerce">Sobre el comercio</string>
+
     <string name="recycler_view_button_info_commerces">Comercios</string>
     <string name="recycler_view_button_info_less_distance">A menos de 1 km</string>
 </resources>

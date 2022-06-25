@@ -68,7 +68,7 @@ class CommercesViewerListAdapter(
         val currentCommerce = commerceList[position]
 
         holder.itemView.setOnClickListener {
-            listener.onPhotoItemClick(currentCommerce, position)
+            listener.onCommerceItemClick(currentCommerce, position)
         }
 
         // Set header color by category

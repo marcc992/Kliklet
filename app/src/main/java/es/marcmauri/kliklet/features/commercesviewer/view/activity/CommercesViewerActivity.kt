@@ -23,7 +23,7 @@ class CommercesViewerActivity : FragmentActivity() {
         loadFragment(commercesViewerListFragment)
     }
 
-    private fun loadFragment(fragment: Fragment) {
+    fun loadFragment(fragment: Fragment) {
         if (!fragment.isAdded) {
             val transaction = supportFragmentManager.beginTransaction()
 

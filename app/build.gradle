@@ -46,6 +46,7 @@ dependencies {
 
     // Dagger
     implementation "com.google.dagger:dagger:$rootProject.ext.daggerVersion"
+    implementation 'com.google.android.gms:play-services-maps:18.0.2'
     kapt "com.google.dagger:dagger-compiler:$rootProject.ext.daggerVersion"
 
     // Glide
