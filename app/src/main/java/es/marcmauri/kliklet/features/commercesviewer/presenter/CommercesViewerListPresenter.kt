@@ -100,9 +100,11 @@ class CommercesViewerListPresenter(val model: CommercesViewerListMVP.Model) :
 
             // Background work
             val commerceList = model.getCommercesByCategory(category)
+            val buttonList = getButtonInfoList(commerceList)
 
             withContext(Dispatchers.Main) {
                 view?.let { v ->
+                    v.showButtonList(buttonList)
                     v.hideLoading()
                     when {
                         commerceList == null -> v.showError("An error occurs fetching data from server")

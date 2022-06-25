@@ -31,7 +31,6 @@ class CategoriesViewerListAdapter(
                 false
             )
         )
-
     }
 
     private fun getTextColorByCategory(category: String): Int =

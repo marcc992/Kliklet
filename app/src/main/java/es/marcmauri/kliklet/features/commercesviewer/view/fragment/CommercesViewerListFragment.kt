@@ -114,13 +114,14 @@ class CommercesViewerListFragment : Fragment(), CommercesViewerListMVP.View {
         binding.recyclerViewCommerceList.adapter = commercesAdapter
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun showButtonList(newButtonsList: List<ButtonInfo>) {
-        newButtonsList.forEach { buttonInfo ->
-            buttonList.add(buttonInfo)
-            binding.recyclerViewButtonList.post {
-                buttonsAdapter.notifyItemInserted(buttonList.size - 1)
-            }
-        }
+        // 1. Remove all previous buttons if so
+        buttonList.clear()
+        // 2. Add all new buttons
+        buttonList.addAll(newButtonsList)
+        // 3. Notify the adapter with all data at once to avoid fancy view effects
+        buttonsAdapter.notifyDataSetChanged()
     }
 
     override fun showCategoryList(newCategoriesList: List<String>) {
@@ -135,21 +136,32 @@ class CommercesViewerListFragment : Fragment(), CommercesViewerListMVP.View {
     @SuppressLint("NotifyDataSetChanged")
     override fun showCommerceList(newCommerceList: List<Commerce>) {
         // It is needed to clear all previous values when we show a new commerces list
-        binding.recyclerViewCommerceList.smoothScrollToPosition(0)
-        commerceList.clear()
-        commercesAdapter.notifyDataSetChanged()
-
-        // Insert commerces one by one to avoid blocking the view
-        newCommerceList.forEach { commerce ->
-            commerceList.add(commerce)
-            binding.recyclerViewCommerceList.post {
-                commercesAdapter.notifyItemInserted(commerceList.size - 1)
-            }
+        if (commerceList.isNotEmpty()) {
+            binding.recyclerViewCommerceList.smoothScrollToPosition(0)
+            commerceList.clear()
+            commercesAdapter.notifyDataSetChanged()
         }
+
+        binding.recyclerViewCommerceList.post {
+
+            // Insert commerces one by one to get fancy view effects
+            newCommerceList.forEach { commerce ->
+                commerceList.add(commerce)
+                binding.recyclerViewCommerceList.post {
+                    commercesAdapter.notifyItemInserted(commerceList.size - 1)
+                }
+            }
+
+        }
+
     }
 
     override fun goToCommerceDetails(commerce: Commerce) {
-        (activity as CommercesViewerActivity).loadFragment(CommercesViewerDetailFragment.newInstance(commerce))
+        (activity as CommercesViewerActivity).loadFragment(
+            CommercesViewerDetailFragment.newInstance(
+                commerce
+            )
+        )
     }
 
     override fun showLoading() {

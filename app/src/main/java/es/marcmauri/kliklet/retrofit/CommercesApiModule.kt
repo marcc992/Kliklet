@@ -14,8 +14,11 @@ class CommercesApiModule {
 
     @Provides
     fun provideHttpClient(): OkHttpClient {
-        val loggingInterceptor = HttpLoggingInterceptor()
-            .setLevel(HttpLoggingInterceptor.Level.BODY)
+        val httpLoggingInterceptor = HttpLoggingInterceptor()
+        val loggingInterceptor =
+            httpLoggingInterceptor.apply {
+                httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BASIC
+            }
 
         return OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
