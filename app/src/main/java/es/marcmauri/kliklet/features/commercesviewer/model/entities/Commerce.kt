@@ -13,7 +13,7 @@ data class Commerce(
     val longitude: Double? = 0.0
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
-        parcel.readString(),
+        parcel.readString()!!,
         parcel.readString(),
         parcel.readString()!!,
         parcel.readParcelable(Logo::class.java.classLoader),

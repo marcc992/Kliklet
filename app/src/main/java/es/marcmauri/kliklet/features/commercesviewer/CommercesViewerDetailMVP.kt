@@ -6,6 +6,7 @@ import es.marcmauri.kliklet.features.commercesviewer.model.entities.Commerce
 interface CommercesViewerDetailMVP {
 
     interface View {
+        fun configureUI()
         fun getCommerceFromExtras(): Commerce?
         fun showCommerceDetails(commerce: Commerce)
         fun goToGoogleMaps(uri: Uri)

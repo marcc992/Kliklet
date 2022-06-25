@@ -18,21 +18,25 @@ class CommercesViewerDetailPresenter() :
     }
 
     override fun onFragmentReady() {
-        view?.showLoading()
+        view?.configureUI()
+        getCommerceFromExtras()
+    }
 
+    private fun getCommerceFromExtras() {
+        view?.showLoading()
         if (currentCommerce == null) {
             view?.showError("The selected commerce could not be loaded")
             view?.goToCommerceList()
         } else {
             view?.showCommerceDetails(currentCommerce!!)
         }
-
         view?.hideLoading()
     }
 
     override fun onBringMeThereButtonClick() {
         val gmmIntentUri =
-            Uri.parse("geo:${currentCommerce?.latitude},${currentCommerce?.longitude}")
+            //Uri.parse("geo:0,0?q=${currentCommerce?.latitude},${currentCommerce?.longitude}")
+            Uri.parse("google.navigation:q=${currentCommerce?.latitude},${currentCommerce?.longitude}") //Uri for navigation
         view?.goToGoogleMaps(gmmIntentUri)
     }
 
