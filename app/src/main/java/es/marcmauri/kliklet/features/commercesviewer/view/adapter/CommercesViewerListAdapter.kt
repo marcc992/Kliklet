@@ -35,20 +35,33 @@ class CommercesViewerListAdapter(
 
     private fun getHeaderColorByCategory(category: String): Drawable =
         when (category) {
-            Constants.Category.BEAUTY -> AppCompatResources.getDrawable(context, R.color.category_beauty)!!
-            Constants.Category.FOOD -> AppCompatResources.getDrawable(context, R.color.category_food)!!
-            Constants.Category.LEISURE -> AppCompatResources.getDrawable(context, R.color.category_leisure)!!
-            Constants.Category.SHOPPING -> AppCompatResources.getDrawable(context, R.color.category_shopping)!!
-            else -> AppCompatResources.getDrawable(context, R.color.category_other)!!
+            Constants.Category.BEAUTY ->
+                AppCompatResources.getDrawable(context, R.color.category_beauty)!!
+            Constants.Category.FOOD ->
+                AppCompatResources.getDrawable(context, R.color.category_food)!!
+            Constants.Category.LEISURE ->
+                AppCompatResources.getDrawable(context, R.color.category_leisure)!!
+            Constants.Category.SHOPPING ->
+                AppCompatResources.getDrawable(context, R.color.category_shopping)!!
+            else ->
+                AppCompatResources.getDrawable(context, R.color.category_other)!!
         }
 
     private fun getCategorySymbol(category: String): Drawable =
         when (category) {
-            Constants.Category.BEAUTY -> AppCompatResources.getDrawable(context, R.drawable.ic_car_wash_white)!!
-            Constants.Category.FOOD -> AppCompatResources.getDrawable(context, R.drawable.ic_catering_white)!!
-            Constants.Category.LEISURE -> AppCompatResources.getDrawable(context, R.drawable.ic_leisure_white)!!
-            Constants.Category.SHOPPING -> AppCompatResources.getDrawable(context, R.drawable.ic_cart_white)!!
-            else -> AppCompatResources.getDrawable(context, R.drawable.ic_payment_regulated_parking_white)!!
+            Constants.Category.BEAUTY ->
+                AppCompatResources.getDrawable(context, R.drawable.ic_car_wash_white)!!
+            Constants.Category.FOOD ->
+                AppCompatResources.getDrawable(context, R.drawable.ic_catering_white)!!
+            Constants.Category.LEISURE ->
+                AppCompatResources.getDrawable(context, R.drawable.ic_leisure_white)!!
+            Constants.Category.SHOPPING ->
+                AppCompatResources.getDrawable(context, R.drawable.ic_cart_white)!!
+            else ->
+                AppCompatResources.getDrawable(
+                    context,
+                    R.drawable.ic_payment_regulated_parking_white
+                )!!
         }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -60,11 +73,11 @@ class CommercesViewerListAdapter(
 
         // Set header color by category
         holder.constraintLayoutCommerceItemHeader.background =
-            getHeaderColorByCategory(currentCommerce.category?: Constants.Category.OTHER)
+            getHeaderColorByCategory(currentCommerce.category ?: Constants.Category.OTHER)
 
         // Set category image
         Glide.with(context)
-            .load(getCategorySymbol(currentCommerce.category?: Constants.Category.OTHER))
+            .load(getCategorySymbol(currentCommerce.category ?: Constants.Category.OTHER))
             .into(holder.ivCommerceSymbol)
 
         // Set commerce thumbnail

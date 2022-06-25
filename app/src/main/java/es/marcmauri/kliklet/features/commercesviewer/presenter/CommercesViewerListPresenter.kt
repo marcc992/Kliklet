@@ -1,7 +1,10 @@
 package es.marcmauri.kliklet.features.commercesviewer.presenter
 
+import android.content.Context
 import androidx.annotation.Nullable
+import es.marcmauri.kliklet.R
 import es.marcmauri.kliklet.features.commercesviewer.CommercesViewerListMVP
+import es.marcmauri.kliklet.features.commercesviewer.model.entities.ButtonInfo
 import es.marcmauri.kliklet.features.commercesviewer.model.entities.Commerce
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -12,7 +15,12 @@ class CommercesViewerListPresenter(val model: CommercesViewerListMVP.Model) :
     CommercesViewerListMVP.Presenter {
 
     @Nullable
+    private var context: Context? = null
     private var view: CommercesViewerListMVP.View? = null
+
+    override fun setContext(ctx: Context) {
+        context = ctx
+    }
 
     override fun setView(view: CommercesViewerListMVP.View) {
         this.view = view
@@ -20,10 +28,33 @@ class CommercesViewerListPresenter(val model: CommercesViewerListMVP.Model) :
 
     override fun onFragmentReady() {
         view?.configureUI()
-        getCommerces()
+        getCommercesFromAPI()
     }
 
-    private fun getCommerces() {
+    private fun getButtonInfoList(commerceList: List<Commerce>?): List<ButtonInfo> {
+        val buttonInfoList = ArrayList<ButtonInfo>(0)
+
+        // Button to show all
+        buttonInfoList.add(
+            ButtonInfo(
+                context!!.getString(R.string.recycler_view_button_info_commerces),
+                commerceList?.size ?: 0,
+                true
+            )
+        )
+
+        // TODO: Determinar los comercios a menos de 10 km
+        buttonInfoList.add(
+            ButtonInfo(
+                context!!.getString(R.string.recycler_view_button_info_less_distance),
+                123
+            )
+        )
+
+        return buttonInfoList
+    }
+
+    private fun getCommercesFromAPI() {
         CoroutineScope(Dispatchers.IO).launch {
             withContext(Dispatchers.Main) {
                 view?.showLoading()
@@ -31,9 +62,11 @@ class CommercesViewerListPresenter(val model: CommercesViewerListMVP.Model) :
 
             // Background work
             val commerceList = model.getAllCommerces()
+            val buttonList = getButtonInfoList(commerceList)
 
             withContext(Dispatchers.Main) {
                 view?.let { v ->
+                    v.showButtonList(buttonList)
                     v.hideLoading()
                     when {
                         commerceList == null -> v.showError("An error occurs fetching data from server")
@@ -44,6 +77,14 @@ class CommercesViewerListPresenter(val model: CommercesViewerListMVP.Model) :
             }
         }
 
+    }
+
+    override fun onButtonItemClick(buttonInfo: ButtonInfo) {
+        view?.showError("TODO(\"onButtonItemClick Not yet implemented\")")
+    }
+
+    override fun onCategoryItemClick() {
+        view?.showError("TODO(\"onCategoryItemClick Not yet implemented\")")
     }
 
     override fun onCommerceItemClick(commerce: Commerce) {
