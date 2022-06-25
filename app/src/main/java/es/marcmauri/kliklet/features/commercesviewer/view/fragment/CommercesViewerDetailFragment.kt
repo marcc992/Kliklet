@@ -162,6 +162,4 @@ class CommercesViewerDetailFragment : Fragment(), CommercesViewerDetailMVP.View 
             view = binding.rootView
         )
     }
-
-
 }

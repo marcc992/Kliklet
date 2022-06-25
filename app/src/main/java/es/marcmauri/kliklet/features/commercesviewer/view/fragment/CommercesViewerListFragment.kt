@@ -1,5 +1,6 @@
 package es.marcmauri.kliklet.features.commercesviewer.view.fragment
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -131,7 +132,14 @@ class CommercesViewerListFragment : Fragment(), CommercesViewerListMVP.View {
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun showCommerceList(newCommerceList: List<Commerce>) {
+        // It is needed to clear all previous values when we show a new commerces list
+        binding.recyclerViewCommerceList.smoothScrollToPosition(0)
+        commerceList.clear()
+        commercesAdapter.notifyDataSetChanged()
+
+        // Insert commerces one by one to avoid blocking the view
         newCommerceList.forEach { commerce ->
             commerceList.add(commerce)
             binding.recyclerViewCommerceList.post {

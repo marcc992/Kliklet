@@ -93,7 +93,25 @@ class CommercesViewerListPresenter(val model: CommercesViewerListMVP.Model) :
     }
 
     override fun onCategoryItemClick(category: String) {
-        view?.showError("TODO(\"onCategoryItemClick Not yet implemented\")")
+        CoroutineScope(Dispatchers.IO).launch {
+            withContext(Dispatchers.Main) {
+                view?.showLoading()
+            }
+
+            // Background work
+            val commerceList = model.getCommercesByCategory(category)
+
+            withContext(Dispatchers.Main) {
+                view?.let { v ->
+                    v.hideLoading()
+                    when {
+                        commerceList == null -> v.showError("An error occurs fetching data from server")
+                        commerceList.isEmpty() -> v.showError("No $category commerces available right now")
+                        else -> v.showCommerceList(commerceList)
+                    }
+                }
+            }
+        }
     }
 
     override fun onCommerceItemClick(commerce: Commerce) {

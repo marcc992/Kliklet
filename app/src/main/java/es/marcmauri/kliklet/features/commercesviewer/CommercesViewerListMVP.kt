@@ -8,6 +8,8 @@ interface CommercesViewerListMVP {
 
     interface Model {
         suspend fun getAllCommerces(): List<Commerce>?
+        suspend fun getCommercesByCategory(category: String): List<Commerce>?
+        suspend fun getCommercesByDistance(meters: Int): List<Commerce>?
     }
 
     interface View {
