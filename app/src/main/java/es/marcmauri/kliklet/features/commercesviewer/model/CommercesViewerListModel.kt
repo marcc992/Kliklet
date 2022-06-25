@@ -6,6 +6,7 @@ import es.marcmauri.kliklet.features.commercesviewer.model.entities.Commerce
 import es.marcmauri.kliklet.features.commercesviewer.model.entities.Logo
 import es.marcmauri.kliklet.features.commercesviewer.model.entities.Thumbnails
 import es.marcmauri.kliklet.features.commercesviewer.model.repository.CommercesRepository
+import es.marcmauri.kliklet.retrofit.response.ApiCommerce
 import es.marcmauri.kliklet.utils.Constants
 import java.lang.Exception
 
@@ -16,26 +17,34 @@ class CommercesViewerListModel(private val repository: CommercesRepository) :
 
     override suspend fun getAllCommerces(): List<Commerce>? {
         return try {
-            repository.getAllCommerces().map { apiCommerce ->
-                Commerce(
-                    apiCommerce.name,
-                    apiCommerce.description,
-                    apiCommerce.category?: Constants.Category.OTHER,
-                    Logo(
-                        Thumbnails(
-                            apiCommerce.apiLogo?.apiThumbnails?.small,
-                            apiCommerce.apiLogo?.apiThumbnails?.medium,
-                            apiCommerce.apiLogo?.apiThumbnails?.large
+            repository.getAllCommerces()
+                .filterNot { apiCommerce ->
+                    // Filter the "invalid" commerces which should not be shown
+                    apiCommerce.name.isNullOrEmpty()
+                            || apiCommerce.name!!.lowercase().contains("error")
+                            || apiCommerce.name!!.lowercase().contains("antiguo")
+                            || apiCommerce.name!!.lowercase().contains("cerrado")
+                }
+                .map { apiCommerce ->
+                    Commerce(
+                        apiCommerce.name,
+                        apiCommerce.description,
+                        apiCommerce.category ?: Constants.Category.OTHER,
+                        Logo(
+                            Thumbnails(
+                                apiCommerce.apiLogo?.apiThumbnails?.small,
+                                apiCommerce.apiLogo?.apiThumbnails?.medium,
+                                apiCommerce.apiLogo?.apiThumbnails?.large
+                            ),
+                            apiCommerce.apiLogo?.format,
+                            apiCommerce.apiLogo?.url
                         ),
-                        apiCommerce.apiLogo?.format,
-                        apiCommerce.apiLogo?.url
-                    ),
-                    apiCommerce.latitude,
-                    apiCommerce.longitude
-                )
-            }
+                        apiCommerce.latitude,
+                        apiCommerce.longitude
+                    )
+                }
         } catch (e: Exception) {
-            Log.e(TAG, "Something was wrong calling Commerces API /GET all -> ${e.localizedMessage}", e)
+            Log.e(TAG, "Something was wrong calling Commerces API -> ${e.localizedMessage}", e)
             null
         }
     }
