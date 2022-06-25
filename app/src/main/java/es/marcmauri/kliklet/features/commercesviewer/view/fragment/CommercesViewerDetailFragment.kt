@@ -19,6 +19,8 @@ import es.marcmauri.kliklet.databinding.FragmentCommercesViewerDetailBinding
 import es.marcmauri.kliklet.features.commercesviewer.CommercesViewerDetailMVP
 import es.marcmauri.kliklet.features.commercesviewer.model.entities.Commerce
 import es.marcmauri.kliklet.features.commercesviewer.view.activity.CommercesViewerActivity
+import es.marcmauri.kliklet.utils.Constants
+import es.marcmauri.kliklet.utils.asSentence
 import es.marcmauri.kliklet.utils.snackBar
 import javax.inject.Inject
 
@@ -80,7 +82,7 @@ class CommercesViewerDetailFragment : Fragment(), CommercesViewerDetailMVP.View 
 
         // Populate images
         Glide.with(requireContext())
-            .load(R.drawable.ic_only_image) // todo: Existe imagen rectangular para poner aqui?
+            .load(R.drawable.ic_only_image)
             .centerCrop()
             .placeholder(
                 AppCompatResources.getDrawable(
@@ -103,7 +105,18 @@ class CommercesViewerDetailFragment : Fragment(), CommercesViewerDetailMVP.View 
 
         // Populate texts
         binding.tvMapDetailTitle.text = commerce.name
-        binding.tvMapDetailSubtitle.text = commerce.category // todo: recuperar calle u otra info
+
+        val commerceAddressText =
+            if (commerce.address?.street == null || commerce.address.city == null) {
+                Constants.Literals.UNDEFINED
+            } else {
+                """
+                    ${commerce.address.street.asSentence()}
+                    ${commerce.address.city.asSentence()}
+                """.trimIndent()
+            }
+        binding.tvMapDetailSubtitle.text = commerceAddressText
+
         val latLongText = "${commerce.latitude}, ${commerce.longitude}"
         binding.tvMapDetailCoords.text = latLongText
         binding.tvCommerceDetailedInfo.text = commerce.description

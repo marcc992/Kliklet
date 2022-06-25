@@ -2,13 +2,12 @@ package es.marcmauri.kliklet.features.commercesviewer.model
 
 import android.util.Log
 import es.marcmauri.kliklet.features.commercesviewer.CommercesViewerListMVP
+import es.marcmauri.kliklet.features.commercesviewer.model.entities.Address
 import es.marcmauri.kliklet.features.commercesviewer.model.entities.Commerce
 import es.marcmauri.kliklet.features.commercesviewer.model.entities.Logo
 import es.marcmauri.kliklet.features.commercesviewer.model.entities.Thumbnails
 import es.marcmauri.kliklet.features.commercesviewer.model.repository.CommercesRepository
-import es.marcmauri.kliklet.retrofit.response.ApiCommerce
 import es.marcmauri.kliklet.utils.Constants
-import java.lang.Exception
 
 private const val TAG = "CommercesViewerListModel"
 
@@ -33,6 +32,12 @@ class CommercesViewerListModel(private val repository: CommercesRepository) :
                         apiCommerce.name,
                         apiCommerce.description,
                         apiCommerce.category ?: Constants.Category.OTHER,
+                        Address(
+                            apiCommerce.apiAddress?.street,
+                            apiCommerce.apiAddress?.country,
+                            apiCommerce.apiAddress?.city,
+                            apiCommerce.apiAddress?.zip
+                        ),
                         Logo(
                             Thumbnails(
                                 apiCommerce.apiLogo?.apiThumbnails?.small,

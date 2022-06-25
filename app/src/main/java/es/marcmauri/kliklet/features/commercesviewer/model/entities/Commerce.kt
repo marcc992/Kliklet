@@ -8,14 +8,16 @@ data class Commerce(
     val name: String? = "Unknown",
     val description: String? = "Unknown",
     val category: String = Constants.Category.OTHER,
+    val address: Address? = null,
     val logo: Logo? = null,
     val latitude: Double? = 0.0,
     val longitude: Double? = 0.0
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
-        parcel.readString()!!,
+        parcel.readString(),
         parcel.readString(),
         parcel.readString()!!,
+        parcel.readParcelable(Address::class.java.classLoader),
         parcel.readParcelable(Logo::class.java.classLoader),
         parcel.readValue(Double::class.java.classLoader) as? Double,
         parcel.readValue(Double::class.java.classLoader) as? Double
@@ -26,6 +28,7 @@ data class Commerce(
         parcel.writeString(name)
         parcel.writeString(description)
         parcel.writeString(category)
+        parcel.writeParcelable(address, flags)
         parcel.writeParcelable(logo, flags)
         parcel.writeValue(latitude)
         parcel.writeValue(longitude)

@@ -12,4 +12,10 @@ class Constants {
         }
     }
 
+    class Literals {
+        companion object {
+            const val UNDEFINED = "Undefined"
+        }
+    }
+
 }
