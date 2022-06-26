@@ -19,14 +19,19 @@ import es.marcmauri.kliklet.databinding.FragmentCommercesViewerDetailBinding
 import es.marcmauri.kliklet.features.commercesviewer.CommercesViewerDetailMVP
 import es.marcmauri.kliklet.features.commercesviewer.model.entities.Commerce
 import es.marcmauri.kliklet.features.commercesviewer.view.activity.CommercesViewerActivity
-import es.marcmauri.kliklet.utils.Constants
-import es.marcmauri.kliklet.utils.asSentence
-import es.marcmauri.kliklet.utils.snackBar
+import es.marcmauri.kliklet.common.Constants
+import es.marcmauri.kliklet.common.asSentence
+import es.marcmauri.kliklet.common.snackBar
 import javax.inject.Inject
 
 private const val EXTRA_PARAM_COMMERCE = "extra_param_commerce"
 
 class CommercesViewerDetailFragment : Fragment(), CommercesViewerDetailMVP.View {
+
+    @Inject
+    lateinit var presenter: CommercesViewerDetailMVP.Presenter
+    private lateinit var binding: FragmentCommercesViewerDetailBinding
+    private var currentCommerce: Commerce? = null
 
     companion object {
         @JvmStatic
@@ -37,11 +42,6 @@ class CommercesViewerDetailFragment : Fragment(), CommercesViewerDetailMVP.View 
                 }
             }
     }
-
-    @Inject
-    lateinit var presenter: CommercesViewerDetailMVP.Presenter
-    private lateinit var binding: FragmentCommercesViewerDetailBinding
-    private var currentCommerce: Commerce? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

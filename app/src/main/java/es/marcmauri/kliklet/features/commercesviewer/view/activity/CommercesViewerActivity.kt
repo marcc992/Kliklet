@@ -1,20 +1,32 @@
 package es.marcmauri.kliklet.features.commercesviewer.view.activity
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.graphics.Typeface
 import android.os.Bundle
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import es.marcmauri.kliklet.R
 import es.marcmauri.kliklet.app.KlikletApp
+import es.marcmauri.kliklet.app.appPreferences
 import es.marcmauri.kliklet.databinding.ActivityCommercesViewerBinding
 import es.marcmauri.kliklet.features.commercesviewer.view.fragment.CommercesViewerListFragment
+import es.marcmauri.kliklet.common.snackBar
 
 class CommercesViewerActivity : FragmentActivity() {
 
     private lateinit var binding: ActivityCommercesViewerBinding
     private val commercesViewerListFragment by lazy { CommercesViewerListFragment() }
+
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private val REQUEST_CODE_LOCATION = 200
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,6 +34,10 @@ class CommercesViewerActivity : FragmentActivity() {
         setContentView(binding.root)
 
         (application as KlikletApp).getComponent().inject(this)
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+        // Check if the device has the Google Services installed & available
+        checkLocationPermissionsAndContinue()
 
         // Set a simple listener to the back button from the Toolbar
         binding.ivToolbarBack.setOnClickListener { this.onBackPressed() }
@@ -61,6 +77,55 @@ class CommercesViewerActivity : FragmentActivity() {
         binding.tvToolbarTitle.text = getString(R.string.activity_commerces_viewer_toolbar_title)
         binding.tvToolbarTitle.setTypeface(null, Typeface.BOLD)
     }
+
+    private fun checkLocationPermissionsAndContinue() {
+        if (checkGoogleServicesAvailable()) {
+            val locationPermissionRequest = registerForActivityResult(
+                ActivityResultContracts.RequestMultiplePermissions()
+            ) { permissions ->
+
+                val locationPermissionsGranted = when {
+                    permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false -> true
+                    permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false -> true
+                    else -> false
+                }
+
+                if (locationPermissionsGranted) {
+                    getLastKnownLocation()
+                }
+            }
+
+            locationPermissionRequest.launch(
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            )
+        } else {
+            snackBar("Your devices has not support to Google Services", binding.root)
+        }
+    }
+
+
+    private fun checkGoogleServicesAvailable() = GoogleApiAvailability.getInstance()
+        .isGooglePlayServicesAvailable(this) == ConnectionResult.SUCCESS
+
+
+    /**
+     * [private ]This method gets the last known location from the user. It is called just after
+     * checking the user location permissions, either FINE or COARSE
+     */
+    @SuppressLint("MissingPermission")
+    private fun getLastKnownLocation() {
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location ->
+                if (location != null) {
+                    appPreferences.lastLatitude = location.latitude.toFloat()
+                    appPreferences.lastLongitude = location.longitude.toFloat()
+                }
+            }
+    }
+
 
     /**
      * This method will be called each time a detail fragment was destroyed, so we can restore

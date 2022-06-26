@@ -6,7 +6,7 @@ import es.marcmauri.kliklet.features.commercesviewer.model.entities.Logo
 import es.marcmauri.kliklet.features.commercesviewer.model.entities.Thumbnails
 import es.marcmauri.kliklet.features.commercesviewer.model.repository.CommercesRepository
 import es.marcmauri.kliklet.retrofit.CommercesApiService
-import es.marcmauri.kliklet.utils.Constants
+import es.marcmauri.kliklet.common.Constants
 
 class LiveCommercesRepositoryImpl(private val commercesApiService: CommercesApiService) :
     CommercesRepository {

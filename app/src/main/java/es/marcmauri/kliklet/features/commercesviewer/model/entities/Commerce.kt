@@ -2,7 +2,7 @@ package es.marcmauri.kliklet.features.commercesviewer.model.entities
 
 import android.os.Parcel
 import android.os.Parcelable
-import es.marcmauri.kliklet.utils.Constants
+import es.marcmauri.kliklet.common.Constants
 
 data class Commerce(
     val name: String? = "Unknown",

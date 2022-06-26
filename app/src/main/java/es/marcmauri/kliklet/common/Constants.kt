@@ -1,4 +1,4 @@
-package es.marcmauri.kliklet.utils
+package es.marcmauri.kliklet.common
 
 class Constants {
 

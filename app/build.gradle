@@ -53,8 +53,9 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:$rootProject.ext.glideVersion"
     annotationProcessor "com.github.bumptech.glide:compiler:$rootProject.ext.glideVersion"
 
-    // GMaps
+    // Google Services
     implementation "com.google.android.gms:play-services-maps:$rootProject.ext.playServicesMapsVersion"
+    implementation "com.google.android.gms:play-services-location:$rootProject.ext.playServicesLocationVersion"
 
     // Kotlin Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.ext.coroutinesVersion")

@@ -20,7 +20,7 @@ import es.marcmauri.kliklet.features.commercesviewer.view.adapter.CommercesViewe
 import es.marcmauri.kliklet.features.commercesviewer.view.listener.RecyclerButtonsViewerListListener
 import es.marcmauri.kliklet.features.commercesviewer.view.listener.RecyclerCategoriesViewerListListener
 import es.marcmauri.kliklet.features.commercesviewer.view.listener.RecyclerCommercesViewerListListener
-import es.marcmauri.kliklet.utils.snackBar
+import es.marcmauri.kliklet.common.snackBar
 import javax.inject.Inject
 
 
@@ -124,11 +124,22 @@ class CommercesViewerListFragment : Fragment(), CommercesViewerListMVP.View {
         buttonsAdapter.notifyDataSetChanged()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun showCategoryList(newCategoriesList: List<String>) {
-        newCategoriesList.forEach { category ->
-            categoryList.add(category)
-            binding.recyclerViewCategoryList.post {
-                categoriesAdapter.notifyItemInserted(categoryList.size - 1)
+        if (categoryList.isNotEmpty()) {
+            binding.recyclerViewCategoryList.smoothScrollToPosition(0)
+            categoryList.clear()
+            categoriesAdapter.notifyDataSetChanged()
+        }
+
+        binding.recyclerViewCategoryList.post {
+
+            // Insert Categories one by one to get fancy view effects
+            newCategoriesList.forEach { category ->
+                categoryList.add(category)
+                binding.recyclerViewCategoryList.post {
+                    categoriesAdapter.notifyItemInserted(categoryList.size - 1)
+                }
             }
         }
     }
@@ -151,9 +162,7 @@ class CommercesViewerListFragment : Fragment(), CommercesViewerListMVP.View {
                     commercesAdapter.notifyItemInserted(commerceList.size - 1)
                 }
             }
-
         }
-
     }
 
     override fun goToCommerceDetails(commerce: Commerce) {

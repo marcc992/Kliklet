@@ -11,8 +11,8 @@ import com.bumptech.glide.Glide
 import es.marcmauri.kliklet.R
 import es.marcmauri.kliklet.databinding.RecyclerCategoryListItemBinding
 import es.marcmauri.kliklet.features.commercesviewer.view.listener.RecyclerCategoriesViewerListListener
-import es.marcmauri.kliklet.utils.Constants
-import es.marcmauri.kliklet.utils.asSentence
+import es.marcmauri.kliklet.common.Constants
+import es.marcmauri.kliklet.common.asSentence
 
 
 class CategoriesViewerListAdapter(

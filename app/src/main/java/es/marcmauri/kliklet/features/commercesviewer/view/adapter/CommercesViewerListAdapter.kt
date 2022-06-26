@@ -7,11 +7,14 @@ import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.gms.maps.model.LatLng
 import es.marcmauri.kliklet.R
+import es.marcmauri.kliklet.app.appPreferences
 import es.marcmauri.kliklet.databinding.RecyclerCommerceListItemBinding
 import es.marcmauri.kliklet.features.commercesviewer.model.entities.Commerce
 import es.marcmauri.kliklet.features.commercesviewer.view.listener.RecyclerCommercesViewerListListener
-import es.marcmauri.kliklet.utils.Constants
+import es.marcmauri.kliklet.common.Constants
+import es.marcmauri.kliklet.common.distanceToInKm
 
 
 class CommercesViewerListAdapter(
@@ -67,6 +70,7 @@ class CommercesViewerListAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentCommerce = commerceList[position]
 
+        // Set on Commerce holder click listener
         holder.itemView.setOnClickListener {
             listener.onCommerceItemClick(currentCommerce, position)
         }
@@ -92,7 +96,19 @@ class CommercesViewerListAdapter(
             .into(holder.ivArrowRight)
 
         // todo: determine Commerce distance
-        holder.tvCommerceDistance.text = "300m."
+        var distance = "${Constants.Literals.UNDEFINED} km."
+        if (appPreferences.lastLatitude < 200f
+            && currentCommerce.latitude != null
+            && currentCommerce.longitude != null
+        ) {
+            val origin = LatLng(
+                appPreferences.lastLatitude.toDouble(),
+                appPreferences.lastLongitude.toDouble()
+            )
+            val destination = LatLng(currentCommerce.latitude, currentCommerce.longitude)
+            distance = "${String.format("%.2f", origin.distanceToInKm(destination))} km."
+        }
+        holder.tvCommerceDistance.text = distance
 
         // Set comerce title and description
         holder.tvCommerceName.text = currentCommerce.name
