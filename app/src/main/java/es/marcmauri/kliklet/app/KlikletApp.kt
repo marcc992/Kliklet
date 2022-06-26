@@ -6,7 +6,7 @@ import es.marcmauri.kliklet.common.SharedPreferencesManager
 import es.marcmauri.kliklet.features.commercesviewer.CommercesViewerModule
 import es.marcmauri.kliklet.retrofit.CommercesApiModule
 
-val appPreferences: SharedPreferencesManager by lazy { KlikletApp.prefs!! }
+val prefs: SharedPreferencesManager by lazy { KlikletApp.prefs!! }
 
 class KlikletApp : Application() {
 

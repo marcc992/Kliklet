@@ -8,5 +8,5 @@
     <string name="fragment_commerce_detail_title_about_commerce">Sobre el comercio</string>
 
     <string name="recycler_view_button_info_commerces">Comercios</string>
-    <string name="recycler_view_button_info_less_distance">A menos de 1 km</string>
+    <string name="recycler_view_button_info_less_distance">A menos de 10 km</string>
 </resources>

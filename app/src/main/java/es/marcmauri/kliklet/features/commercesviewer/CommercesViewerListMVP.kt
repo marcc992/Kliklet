@@ -9,7 +9,7 @@ interface CommercesViewerListMVP {
     interface Model {
         suspend fun getAllCommerces(): List<Commerce>?
         suspend fun getCommercesByCategory(category: String): List<Commerce>?
-        suspend fun getCommercesByDistance(meters: Int): List<Commerce>?
+        suspend fun getCommercesByDistance(kilometers: Int): List<Commerce>?
     }
 
     interface View {
@@ -27,7 +27,7 @@ interface CommercesViewerListMVP {
         fun setContext(ctx: Context)
         fun setView(view: View)
         fun onFragmentReady()
-        fun onButtonItemClick(buttonInfo: ButtonInfo)
+        fun onButtonItemClick(buttonInfo: ButtonInfo, position: Int)
         fun onCategoryItemClick(category: String)
         fun onCommerceItemClick(commerce: Commerce)
     }

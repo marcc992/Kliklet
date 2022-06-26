@@ -13,9 +13,10 @@ import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.model.LatLng
 import es.marcmauri.kliklet.R
 import es.marcmauri.kliklet.app.KlikletApp
-import es.marcmauri.kliklet.app.appPreferences
+import es.marcmauri.kliklet.app.prefs
 import es.marcmauri.kliklet.databinding.ActivityCommercesViewerBinding
 import es.marcmauri.kliklet.features.commercesviewer.view.fragment.CommercesViewerListFragment
 import es.marcmauri.kliklet.common.snackBar
@@ -120,8 +121,7 @@ class CommercesViewerActivity : FragmentActivity() {
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location ->
                 if (location != null) {
-                    appPreferences.lastLatitude = location.latitude.toFloat()
-                    appPreferences.lastLongitude = location.longitude.toFloat()
+                    prefs.lastLocation = LatLng(location.latitude, location.longitude)
                 }
             }
     }

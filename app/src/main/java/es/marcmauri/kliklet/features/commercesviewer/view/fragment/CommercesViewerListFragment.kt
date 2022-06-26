@@ -70,7 +70,7 @@ class CommercesViewerListFragment : Fragment(), CommercesViewerListMVP.View {
         buttonsAdapter =
             ButtonsViewerListAdapter(buttonList, object : RecyclerButtonsViewerListListener {
                 override fun onButtonItemClick(buttonInfo: ButtonInfo, position: Int) {
-                    presenter.onButtonItemClick(buttonInfo)
+                    presenter.onButtonItemClick(buttonInfo, position)
                 }
             })
     }
