@@ -4,11 +4,15 @@ import android.app.Activity
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.snackbar.Snackbar
 import kotlin.math.acos
 import kotlin.math.cos
 import kotlin.math.sin
+
+/* Ext. functions about common functionalities */
 
 private fun showSnackBar(
     message: CharSequence,
@@ -63,3 +67,9 @@ fun LatLng.distanceToInKm(destination: LatLng): Double {
     dist = acos(dist).rad2deg() * 60 * 1.1515
     return dist * 1.609344 // constant for Kilometers
 }
+
+
+/* Ext. functions about GServices and permissions */
+
+fun Activity.checkGoogleServicesAvailable() = GoogleApiAvailability.getInstance()
+    .isGooglePlayServicesAvailable(this) == ConnectionResult.SUCCESS

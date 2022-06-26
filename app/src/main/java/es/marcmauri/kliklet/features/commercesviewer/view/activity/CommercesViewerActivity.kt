@@ -9,52 +9,50 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN
-import com.google.android.gms.common.ConnectionResult
-import com.google.android.gms.common.GoogleApiAvailability
-import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.material.snackbar.Snackbar
 import es.marcmauri.kliklet.R
 import es.marcmauri.kliklet.app.KlikletApp
 import es.marcmauri.kliklet.app.prefs
-import es.marcmauri.kliklet.databinding.ActivityCommercesViewerBinding
-import es.marcmauri.kliklet.features.commercesviewer.view.fragment.CommercesViewerListFragment
+import es.marcmauri.kliklet.common.checkGoogleServicesAvailable
 import es.marcmauri.kliklet.common.snackBar
+import es.marcmauri.kliklet.databinding.ActivityCommercesViewerBinding
+import es.marcmauri.kliklet.features.commercesviewer.view.fragment.CommercesViewerDetailFragment
+import es.marcmauri.kliklet.features.commercesviewer.view.fragment.CommercesViewerListFragment
 
 class CommercesViewerActivity : FragmentActivity() {
 
     private lateinit var binding: ActivityCommercesViewerBinding
+    private val fusedLocationClient by lazy { LocationServices.getFusedLocationProviderClient(this) }
     private val commercesViewerListFragment by lazy { CommercesViewerListFragment() }
 
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private val REQUEST_CODE_LOCATION = 200
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCommercesViewerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Dagger injection
         (application as KlikletApp).getComponent().inject(this)
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-
-        // Check if the device has the Google Services installed & available
-        checkLocationPermissionsAndContinue()
 
         // Set a simple listener to the back button from the Toolbar
         binding.ivToolbarBack.setOnClickListener { this.onBackPressed() }
 
-        // Load the Commerces List Fragment
-        loadFragment(commercesViewerListFragment)
+        // Check if the device has the Google Services installed & available, granted or not,
+        // and proceed with the load of the Commerce list fragment
+        checkLocationPermissionsAndContinue()
     }
 
     fun loadFragment(fragment: Fragment) {
         if (!fragment.isAdded) {
             val transaction = supportFragmentManager.beginTransaction()
 
-            // When we try to load a different fragment than the list, it means we are opening
-            // a commerce detail fragment. In this case we hide the list fragment to not lose its
-            // contents and view. Besides, we leverage that situation to restore the toolbar
-            if (fragment !is CommercesViewerListFragment) {
+            // When we are going to load the Commerce detail fragment, we do not want to destroy
+            // the current one about Commerce list fragment to not lose the current view.
+            // Besides, we want the new one's behavior will be like an activity,
+            // allowing the onBackPressed method to return to he list.
+            if (fragment is CommercesViewerDetailFragment) {
                 transaction
                     .addToBackStack(null)
                     .hide(commercesViewerListFragment)
@@ -67,18 +65,7 @@ class CommercesViewerActivity : FragmentActivity() {
         }
     }
 
-    fun putCommerceNameToToolbar(title: String) {
-        binding.ivToolbarBack.visibility = View.VISIBLE
-        binding.tvToolbarTitle.text = title
-        binding.tvToolbarTitle.setTypeface(null, Typeface.NORMAL)
-    }
-
-    private fun removeCommerceNameFromToolbar() {
-        binding.ivToolbarBack.visibility = View.GONE
-        binding.tvToolbarTitle.text = getString(R.string.activity_commerces_viewer_toolbar_title)
-        binding.tvToolbarTitle.setTypeface(null, Typeface.BOLD)
-    }
-
+    // Todo: put this into ExtensionFunctions, passing an event as lamda
     private fun checkLocationPermissionsAndContinue() {
         if (checkGoogleServicesAvailable()) {
             val locationPermissionRequest = registerForActivityResult(
@@ -93,7 +80,17 @@ class CommercesViewerActivity : FragmentActivity() {
 
                 if (locationPermissionsGranted) {
                     getLastKnownLocation()
+                } else {
+                    snackBar(
+                        message = "You didn't allow the location, so you will not be able to " +
+                                "enjoy all the features",
+                        view = binding.root,
+                        duration = Snackbar.LENGTH_LONG
+                    )
                 }
+
+                // When we have the user consent or not, we proceed launching the commerce list fragment
+                loadFragment(commercesViewerListFragment)
             }
 
             locationPermissionRequest.launch(
@@ -103,14 +100,17 @@ class CommercesViewerActivity : FragmentActivity() {
                 )
             )
         } else {
-            snackBar("Your devices has not support to Google Services", binding.root)
+            // We cant access to the user location because their mobile does not have GServices.
+            // Anyway, the fragment is loaded but with limited UX
+            snackBar(
+                message = "Google services are not allowed on your device, so you will not be " +
+                        "able to enjoy all the features.",
+                view = binding.root,
+                duration = Snackbar.LENGTH_LONG
+            )
+            loadFragment(commercesViewerListFragment)
         }
     }
-
-
-    private fun checkGoogleServicesAvailable() = GoogleApiAvailability.getInstance()
-        .isGooglePlayServicesAvailable(this) == ConnectionResult.SUCCESS
-
 
     /**
      * [private ]This method gets the last known location from the user. It is called just after
@@ -126,6 +126,17 @@ class CommercesViewerActivity : FragmentActivity() {
             }
     }
 
+    fun putCommerceNameToToolbar(title: String) {
+        binding.ivToolbarBack.visibility = View.VISIBLE
+        binding.tvToolbarTitle.text = title
+        binding.tvToolbarTitle.setTypeface(null, Typeface.NORMAL)
+    }
+
+    private fun removeCommerceNameFromToolbar() {
+        binding.ivToolbarBack.visibility = View.GONE
+        binding.tvToolbarTitle.text = getString(R.string.activity_commerces_viewer_toolbar_title)
+        binding.tvToolbarTitle.setTypeface(null, Typeface.BOLD)
+    }
 
     /**
      * This method will be called each time a detail fragment was destroyed, so we can restore
