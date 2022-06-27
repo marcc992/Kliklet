@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">Kliklet</string>
+
+    <string name="activity_commerces_viewer_toolbar_title">Llistat de comerços</string>
+
+    <string name="fragment_commerce_detail_title_location">Localització</string>
+    <string name="fragment_commerce_detail_title_bring_me_there">Porta\'m aquí</string>
+    <string name="fragment_commerce_detail_title_about_commerce">Sobre el comerç</string>
+
+    <string name="recycler_view_button_info_commerces">Comerços</string>
+    <string name="recycler_view_button_info_less_distance">A menys de 10 km</string>
+
+    <string name="error_message_no_commerces_available">No hi ha comerços disponibles en aquest moment</string>
+    <string name="error_message_location_disabled">No podeu utilitzar aquesta opció amb la ubicació deshabilitada…</string>
+    <string name="error_message_location_not_allowed">No vas permetre la ubicació, per la qual cosa no podràs gaudir de totes les funcionalitats</string>
+    <string name="error_message_location_unreachable">Aquest comerç no té enregistrada la ubicació</string>
+    <string name="error_message_google_maps_not_found">No s\'ha trobat Google Maps!</string>
+    <string name="error_message_google_services_not_available">Els serveis de Google no estan permesos al dispositiu, per la qual cosa no podreu gaudir de totes les funcionalitats</string>
+    <string name="error_message_commerce_not_loaded">No s\'ha pogut carregar el comerç seleccionat</string>
+</resources>

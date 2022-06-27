@@ -82,8 +82,7 @@ class CommercesViewerActivity : FragmentActivity() {
                     getLastKnownLocation()
                 } else {
                     snackBar(
-                        message = "You didn't allow the location, so you will not be able to " +
-                                "enjoy all the features",
+                        message = getString(R.string.error_message_location_not_allowed),
                         view = binding.root,
                         duration = Snackbar.LENGTH_LONG
                     )
@@ -103,8 +102,7 @@ class CommercesViewerActivity : FragmentActivity() {
             // We cant access to the user location because their mobile does not have GServices.
             // Anyway, the fragment is loaded but with limited UX
             snackBar(
-                message = "Google services are not allowed on your device, so you will not be " +
-                        "able to enjoy all the features.",
+                message = getString(R.string.error_message_google_services_not_available),
                 view = binding.root,
                 duration = Snackbar.LENGTH_LONG
             )

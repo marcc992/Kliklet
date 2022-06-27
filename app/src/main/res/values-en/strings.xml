@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="activity_commerces_viewer_toolbar_title">List of shops</string>
+
+    <string name="fragment_commerce_detail_title_location">Location</string>
+    <string name="fragment_commerce_detail_title_bring_me_there">Bring me there</string>
+    <string name="fragment_commerce_detail_title_about_commerce">About the shop</string>
+
+    <string name="recycler_view_button_info_commerces">Shops</string>
+    <string name="recycler_view_button_info_less_distance">Less than 10 km</string>
+
+    <string name="error_message_no_commerces_available">No shops available right now</string>
+    <string name="error_message_location_disabled">You can\'t use this option with location disabled…</string>
+    <string name="error_message_location_not_allowed">You didn\'t allow the location, so you will not be able to enjoy all the features</string>
+    <string name="error_message_location_unreachable">This commerce does not have its location record</string>
+    <string name="error_message_google_maps_not_found">Google Maps was not found!</string>
+    <string name="error_message_google_services_not_available">Google services are not allowed on your device, so you will not be able to enjoy all the features</string>
+    <string name="error_message_commerce_not_loaded">The selected commerce could not be loaded</string>
+</resources>
