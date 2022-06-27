@@ -17,11 +17,11 @@ class LiveCommercesRepositoryImpl(private val commercesApiService: CommercesApiS
      * Method to get all Commerces available on the server, which not includes the Commerces with
      * rare names.
      *
-     * In first instance, no data exists in memory so the first time, the app always will fetch all
+     * In first instance, no data exists in memory so the first time the app always will fetch all
      * the data from the server.
      *
-     * In the next times this method will be called, all the data will reside in a memory variable.
-     * Because of this, to obtain this data will be time-free and data-free cost.
+     * In the next times this method is called, all the data will reside in a memory variable.
+     * Because of this, to obtain this data will be time and network-free cost.
      */
     override suspend fun getAllCommerces(): List<Commerce> {
         if (allCommercesFromApi == null) {

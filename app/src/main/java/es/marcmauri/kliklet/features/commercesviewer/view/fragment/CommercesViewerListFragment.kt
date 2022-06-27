@@ -1,6 +1,5 @@
 package es.marcmauri.kliklet.features.commercesviewer.view.fragment
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,8 +8,11 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import es.marcmauri.kliklet.app.KlikletApp
+import es.marcmauri.kliklet.common.snackBar
+import es.marcmauri.kliklet.databinding.FragmentCommercesViewerListBinding
 import es.marcmauri.kliklet.features.commercesviewer.CommercesViewerListMVP
 import es.marcmauri.kliklet.features.commercesviewer.model.entities.ButtonInfo
+import es.marcmauri.kliklet.features.commercesviewer.model.entities.CategoryInfo
 import es.marcmauri.kliklet.features.commercesviewer.model.entities.Commerce
 import es.marcmauri.kliklet.features.commercesviewer.view.activity.CommercesViewerActivity
 import es.marcmauri.kliklet.features.commercesviewer.view.adapter.ButtonsViewerListAdapter
@@ -19,9 +21,6 @@ import es.marcmauri.kliklet.features.commercesviewer.view.adapter.CommercesViewe
 import es.marcmauri.kliklet.features.commercesviewer.view.listener.RecyclerButtonsViewerListListener
 import es.marcmauri.kliklet.features.commercesviewer.view.listener.RecyclerCategoriesViewerListListener
 import es.marcmauri.kliklet.features.commercesviewer.view.listener.RecyclerCommercesViewerListListener
-import es.marcmauri.kliklet.common.snackBar
-import es.marcmauri.kliklet.databinding.FragmentCommercesViewerListBinding
-import es.marcmauri.kliklet.features.commercesviewer.model.entities.CategoryInfo
 import javax.inject.Inject
 
 
@@ -37,6 +36,7 @@ class CommercesViewerListFragment : Fragment(), CommercesViewerListMVP.View {
     private var buttonList: ArrayList<ButtonInfo> = ArrayList(0)
     private var categoryList: ArrayList<CategoryInfo> = ArrayList(0)
     private var commerceList: ArrayList<Commerce> = ArrayList(0)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,7 +64,6 @@ class CommercesViewerListFragment : Fragment(), CommercesViewerListMVP.View {
         setButtonsAdapter()
         setCategoriesAdapter()
         setCommerceAdapter()
-        setRecyclerViews()
     }
 
     private fun setButtonsAdapter() {
@@ -74,6 +73,11 @@ class CommercesViewerListFragment : Fragment(), CommercesViewerListMVP.View {
                     presenter.onButtonItemClick(buttonInfo, position)
                 }
             })
+
+        binding.recyclerViewButtonList.itemAnimator = DefaultItemAnimator()
+        binding.recyclerViewButtonList.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        binding.recyclerViewButtonList.adapter = buttonsAdapter
     }
 
     private fun setCategoriesAdapter() {
@@ -85,38 +89,26 @@ class CommercesViewerListFragment : Fragment(), CommercesViewerListMVP.View {
                         presenter.onCategoryItemClick(category, position)
                     }
                 })
+
+        binding.recyclerViewCategoryList.itemAnimator = DefaultItemAnimator()
+        binding.recyclerViewCategoryList.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        binding.recyclerViewCategoryList.adapter = categoriesAdapter
     }
 
     private fun setCommerceAdapter() {
         commercesAdapter =
             CommercesViewerListAdapter(commerceList, object : RecyclerCommercesViewerListListener {
-                override fun onCommerceItemClick(commerce: Commerce, position: Int) {
+                override fun onCommerceItemClick(commerce: Commerce) {
                     presenter.onCommerceItemClick(commerce)
                 }
             })
-    }
 
-    private fun setRecyclerViews() {
-        // Buttons recycler view
-        binding.recyclerViewButtonList.itemAnimator = DefaultItemAnimator()
-        binding.recyclerViewButtonList.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            //LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        binding.recyclerViewButtonList.adapter = buttonsAdapter
-
-        // Categories recycler view
-        binding.recyclerViewCategoryList.itemAnimator = DefaultItemAnimator()
-        binding.recyclerViewCategoryList.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        binding.recyclerViewCategoryList.adapter = categoriesAdapter
-
-        // Commerces recycler view
         binding.recyclerViewCommerceList.itemAnimator = DefaultItemAnimator()
         binding.recyclerViewCommerceList.layoutManager = LinearLayoutManager(context)
         binding.recyclerViewCommerceList.adapter = commercesAdapter
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     private fun setButtonList(newButtonsList: List<ButtonInfo>) {
         // 1. Remove all previous buttons if so
         val lastButtonsCount = buttonsAdapter.itemCount
@@ -124,15 +116,14 @@ class CommercesViewerListFragment : Fragment(), CommercesViewerListMVP.View {
         buttonsAdapter.notifyItemRangeRemoved(0, lastButtonsCount)
         // 2. Add all new buttons
         buttonList.addAll(newButtonsList)
-        // 3. Notify the adapter with the new data
         buttonsAdapter.notifyItemRangeInserted(0, newButtonsList.size)
     }
 
     private fun updateButtonList(modifiedButtonsList: List<ButtonInfo>) {
         modifiedButtonsList.forEachIndexed { position, buttonInfo ->
             if (buttonList[position] != (buttonInfo)) {
-                // The button is updated only and only the current one is different
-                buttonList[position]= buttonInfo
+                // The button is updated only when the new one is different
+                buttonList[position] = buttonInfo
                 buttonsAdapter.notifyItemChanged(position)
             }
         }
@@ -144,112 +135,84 @@ class CommercesViewerListFragment : Fragment(), CommercesViewerListMVP.View {
             // to set the entire button list
             setButtonList(newButtonsList)
         } else {
-            // When the sizes are the sem, we just need to update the current buttons
+            // When the sizes are the same, we just need to update some of the current ones
             updateButtonList(newButtonsList)
         }
     }
 
-//    private fun setCategoryList(newCategoryList: List<CategoryInfo>) {
-//        // 1. Remove all previous categories if so
-//        val lastCategoryItemCount = categoriesAdapter.itemCount
-//        categoryList.clear()
-//        categoriesAdapter.notifyItemRangeRemoved(0, -lastCategoryItemCount)
-//        // 2. Add all new categories
-//        categoryList.addAll(newCategoryList)
-//        // 3. Notify the adapter with the new data
-//        categoriesAdapter.notifyItemRangeInserted(0, newCategoryList.size)
-//    }
-
     private fun setCategoryList(newCategoryList: List<CategoryInfo>) {
         // 1. Remove all previous categories if so
-        val lastCategoryItemCount = categoriesAdapter.itemCount
+        val lastCategoryCount = categoriesAdapter.itemCount
         categoryList.clear()
-        categoriesAdapter.notifyItemRangeRemoved(0, lastCategoryItemCount)
+        categoriesAdapter.notifyItemRangeRemoved(0, lastCategoryCount)
         // 2. Add all new categories
         categoryList.addAll(newCategoryList)
-        // 3. Notify the adapter with the new data
-        categoriesAdapter.notifyItemRangeInserted(0, newCategoryList.size)
-
-
-        // 1. Remove all previous categories if so
-        val lastCategoriesCount = categoriesAdapter.itemCount
-        categoryList.clear()
-        categoriesAdapter.notifyItemRangeRemoved(0, lastCategoriesCount)
-        // 2. Add all new categories
-        categoryList.addAll(newCategoryList)
-        // 3. Notify the adapter with the new data
         categoriesAdapter.notifyItemRangeInserted(0, newCategoryList.size)
     }
 
     private fun updateCategoryList(modifiedCategoryList: List<CategoryInfo>) {
         modifiedCategoryList.forEachIndexed { position, categoryInfo ->
             if (categoryList[position] != (categoryInfo)) {
-                // The category is updated only and only the current one is different
-                categoryList[position]= categoryInfo
+                // The category is updated only when the new one is different
+                categoryList[position] = categoryInfo
                 categoriesAdapter.notifyItemChanged(position)
             }
         }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     override fun showCategoryList(newCategoryList: List<CategoryInfo>) {
-
         if (categoryList.size != newCategoryList.size) {
             // When the sizes of current category list and the new category list mismatch, then we
             // need to set the entire category list
             setCategoryList(newCategoryList)
         } else {
-            // When the sizes are the sem, we just need to update the current buttons
+            // When the sizes are the same, we just need to update some of the current ones
             updateCategoryList(newCategoryList)
         }
-
-
-
-
-//        if (categoryList.isNotEmpty()) {
-//            binding.recyclerViewCategoryList.smoothScrollToPosition(0)
-//            categoryList.clear()
-//            categoriesAdapter.notifyDataSetChanged()
-//        }
-//
-//        binding.recyclerViewCategoryList.post {
-//
-//            // Insert Categories one by one to get fancy view effects
-//            newCategoryList.forEach { category ->
-//                categoryList.add(category)
-//                binding.recyclerViewCategoryList.post {
-//                    categoriesAdapter.notifyItemInserted(categoryList.size - 1)
-//                }
-//            }
-//        }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     override fun showCommerceList(newCommerceList: List<Commerce>) {
         // It is needed to clear all previous values when we show a new commerces list
         if (commerceList.isNotEmpty()) {
+            // 1. Smooth scroll to the top of the list
             binding.recyclerViewCommerceList.smoothScrollToPosition(0)
+            // 2. Remove all previous Commerces
+            val lastCommerceCount = commercesAdapter.itemCount
             commerceList.clear()
-            commercesAdapter.notifyDataSetChanged()
+            commercesAdapter.notifyItemRangeRemoved(0, lastCommerceCount)
         }
 
-        binding.recyclerViewCommerceList.post {
+        commerceList.addAll(newCommerceList)
+        commercesAdapter.notifyItemRangeInserted(0, commerceList.size)
+    }
 
-            // Insert commerces one by one to get fancy view effects
-            newCommerceList.forEach { commerce ->
-                commerceList.add(commerce)
-                binding.recyclerViewCommerceList.post {
-                    commercesAdapter.notifyItemInserted(commerceList.size - 1)
-                }
-            }
+    override fun changeSelectedButton(selectedBtnPosition: Int) {
+        buttonList.forEachIndexed { index, button ->
+            button.selected = index == selectedBtnPosition
+        }
+        buttonsAdapter.notifyItemRangeChanged(0, buttonList.size)
+    }
+
+    override fun changeButtonCount(btnPosition: Int, count: Int) {
+        buttonList[btnPosition].count = count
+        buttonsAdapter.notifyItemChanged(btnPosition)
+    }
+
+    override fun changeSelectedCategory(selectedCategoryPosition: Int) {
+        categoryList.forEachIndexed { index, category ->
+            if (category.selected && index != selectedCategoryPosition) {
+                category.selected = false
+                categoriesAdapter.notifyItemChanged(index)
+            } else if (index == selectedCategoryPosition) {
+                category.selected = true
+                categoriesAdapter.notifyItemChanged(index)
+            } // else Do nothing because the current category does not have to change
         }
     }
 
     override fun goToCommerceDetails(commerce: Commerce) {
         (activity as CommercesViewerActivity).loadFragment(
-            CommercesViewerDetailFragment.newInstance(
-                commerce
-            )
+            CommercesViewerDetailFragment.newInstance(commerce)
         )
     }
 
@@ -261,12 +224,14 @@ class CommercesViewerListFragment : Fragment(), CommercesViewerListMVP.View {
         binding.progressBarLoading.visibility = View.GONE
     }
 
+    override fun showError(resId: Int) {
+        showError(getString(resId))
+    }
+
     override fun showError(message: String) {
         snackBar(
             message = message,
             view = binding.rootView
         )
     }
-
-
 }

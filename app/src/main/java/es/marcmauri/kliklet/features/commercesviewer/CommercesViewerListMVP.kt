@@ -18,9 +18,13 @@ interface CommercesViewerListMVP {
         fun showButtonList(newButtonsList: List<ButtonInfo>)
         fun showCategoryList(newCategoriesList: List<CategoryInfo>)
         fun showCommerceList(newCommerceList: List<Commerce>)
+        fun changeSelectedButton(selectedBtnPosition: Int)
+        fun changeButtonCount(btnPosition: Int, count: Int)
+        fun changeSelectedCategory(selectedCategoryPosition: Int)
         fun goToCommerceDetails(commerce: Commerce)
         fun showLoading()
         fun hideLoading()
+        fun showError(resId: Int)
         fun showError(message: String)
     }
 

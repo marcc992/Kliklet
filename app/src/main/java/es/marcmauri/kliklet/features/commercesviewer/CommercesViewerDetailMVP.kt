@@ -13,6 +13,7 @@ interface CommercesViewerDetailMVP {
         fun goToCommerceList()
         fun showLoading()
         fun hideLoading()
+        fun showError(resId: Int)
         fun showError(message: String)
     }
 
@@ -20,6 +21,5 @@ interface CommercesViewerDetailMVP {
         fun setView(view: View)
         fun onFragmentReady()
         fun onBringMeThereButtonClick()
-        fun onBackButtonClick()
     }
 }

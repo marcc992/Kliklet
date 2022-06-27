@@ -15,13 +15,13 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import es.marcmauri.kliklet.R
 import es.marcmauri.kliklet.app.KlikletApp
+import es.marcmauri.kliklet.common.Constants.Literals.Companion.UNDEFINED
+import es.marcmauri.kliklet.common.asSentence
+import es.marcmauri.kliklet.common.snackBar
 import es.marcmauri.kliklet.databinding.FragmentCommercesViewerDetailBinding
 import es.marcmauri.kliklet.features.commercesviewer.CommercesViewerDetailMVP
 import es.marcmauri.kliklet.features.commercesviewer.model.entities.Commerce
 import es.marcmauri.kliklet.features.commercesviewer.view.activity.CommercesViewerActivity
-import es.marcmauri.kliklet.common.Constants
-import es.marcmauri.kliklet.common.asSentence
-import es.marcmauri.kliklet.common.snackBar
 import javax.inject.Inject
 
 private const val EXTRA_PARAM_COMMERCE = "extra_param_commerce"
@@ -108,7 +108,7 @@ class CommercesViewerDetailFragment : Fragment(), CommercesViewerDetailMVP.View 
 
         val commerceAddressText =
             if (commerce.address?.street == null || commerce.address.city == null) {
-                Constants.Literals.UNDEFINED
+                UNDEFINED
             } else {
                 """
                     ${commerce.address.street.asSentence()}
@@ -129,7 +129,7 @@ class CommercesViewerDetailFragment : Fragment(), CommercesViewerDetailMVP.View 
                 googleMap.addMarker(MarkerOptions().position(currentLocation).title(commerce.name))
                 googleMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation))
             } else {
-                showError("This commerce does not have its location record")
+                showError(R.string.error_message_location_unreachable)
             }
         }
     }
@@ -140,7 +140,7 @@ class CommercesViewerDetailFragment : Fragment(), CommercesViewerDetailMVP.View 
         mapIntent.resolveActivity(requireActivity().packageManager)?.let {
             startActivity(mapIntent)
         } ?: run {
-            showError("Google Maps was not found!")
+            showError(R.string.error_message_google_maps_not_found)
         }
     }
 
@@ -154,6 +154,10 @@ class CommercesViewerDetailFragment : Fragment(), CommercesViewerDetailMVP.View 
 
     override fun hideLoading() {
         binding.progressBarLoading.visibility = View.GONE
+    }
+
+    override fun showError(resId: Int) {
+        showError(getString(resId))
     }
 
     override fun showError(message: String) {

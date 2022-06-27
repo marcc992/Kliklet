@@ -2,9 +2,10 @@ package es.marcmauri.kliklet.features.commercesviewer.presenter
 
 import android.net.Uri
 import androidx.annotation.Nullable
+import es.marcmauri.kliklet.R
 import es.marcmauri.kliklet.features.commercesviewer.CommercesViewerDetailMVP
 
-class CommercesViewerDetailPresenter() :
+class CommercesViewerDetailPresenter :
     CommercesViewerDetailMVP.Presenter {
 
     @Nullable
@@ -13,19 +14,29 @@ class CommercesViewerDetailPresenter() :
         view?.getCommerceFromExtras()
     }
 
+    /**
+     * Setter of the view.
+     */
     override fun setView(view: CommercesViewerDetailMVP.View) {
         this.view = view
     }
 
+    /**
+     * Funct called when the Fragment is ready to configure the next steps.
+     */
     override fun onFragmentReady() {
         view?.configureUI()
         getCommerceFromExtras()
     }
 
+    /**
+     * Funct called to get the selected Commerce by user to show its detail.
+     * If something goes wrong, an error is shown and the app returns to the previous list
+     */
     private fun getCommerceFromExtras() {
         view?.showLoading()
         if (currentCommerce == null) {
-            view?.showError("The selected commerce could not be loaded")
+            view?.showError(R.string.error_message_commerce_not_loaded)
             view?.goToCommerceList()
         } else {
             view?.showCommerceDetails(currentCommerce!!)
@@ -33,15 +44,15 @@ class CommercesViewerDetailPresenter() :
         view?.hideLoading()
     }
 
+    /**
+     * This function is called when the users clicks on the custom button to start the
+     * GPS Navigation to the selected Commerce.
+     */
     override fun onBringMeThereButtonClick() {
+        //Uri for navigation
         val gmmIntentUri =
-            //Uri.parse("geo:0,0?q=${currentCommerce?.latitude},${currentCommerce?.longitude}")
-            Uri.parse("google.navigation:q=${currentCommerce?.latitude},${currentCommerce?.longitude}") //Uri for navigation
+            Uri.parse("google.navigation:q=${currentCommerce?.latitude},${currentCommerce?.longitude}")
         view?.goToGoogleMaps(gmmIntentUri)
-    }
-
-    override fun onBackButtonClick() {
-        view?.goToCommerceList()
     }
 
 }

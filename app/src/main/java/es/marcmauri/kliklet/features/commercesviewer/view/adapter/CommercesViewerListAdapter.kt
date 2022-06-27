@@ -33,7 +33,6 @@ class CommercesViewerListAdapter(
                 false
             )
         )
-
     }
 
     private fun getHeaderColorByCategory(category: String): Drawable =
@@ -72,16 +71,16 @@ class CommercesViewerListAdapter(
 
         // Set on Commerce holder click listener
         holder.itemView.setOnClickListener {
-            listener.onCommerceItemClick(currentCommerce, position)
+            listener.onCommerceItemClick(currentCommerce)
         }
 
         // Set header color by category
         holder.constraintLayoutCommerceItemHeader.background =
-            getHeaderColorByCategory(currentCommerce.category ?: Constants.Category.OTHER)
+            getHeaderColorByCategory(currentCommerce.category)
 
         // Set category image
         Glide.with(context)
-            .load(getCategorySymbol(currentCommerce.category ?: Constants.Category.OTHER))
+            .load(getCategorySymbol(currentCommerce.category))
             .into(holder.ivCommerceSymbol)
 
         // Set commerce thumbnail
@@ -90,17 +89,20 @@ class CommercesViewerListAdapter(
             .placeholder(AppCompatResources.getDrawable(context, R.drawable.ic_placeholder))
             .into(holder.ivCommerceImage)
 
-        // TODO: Encontrar la manera de que el Recycler no lo borre sin necesitar este codigo:
         Glide.with(context)
             .load(AppCompatResources.getDrawable(context, R.drawable.ic_arrow_right_white))
             .into(holder.ivArrowRight)
 
-        // todo: determine Commerce distance
-        var distance = "- km."
+        var distance = "- km"
         if (prefs.isLastLocationReady() && currentCommerce.latitude != null && currentCommerce.longitude != null) {
             val origin = prefs.lastLocation
             val destination = LatLng(currentCommerce.latitude, currentCommerce.longitude)
-            distance = "${String.format("%.2f", origin.distanceToInKm(destination))} km."
+            // Determine if show in meters (less than 10km) or in kilometers
+            distance = if (origin.distanceToInKm(destination).toInt() >= 10) {
+                "${String.format("%.2f", origin.distanceToInKm(destination))} km"
+            } else {
+                "${String.format("%.0f", origin.distanceToInKm(destination) * 1000)} m."
+            }
         }
         holder.tvCommerceDistance.text = distance
 
