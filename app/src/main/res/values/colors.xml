@@ -13,6 +13,7 @@
     <color name="button_blue_dark">#041E42</color>
     <color name="text_orange">#FF6200</color>
     <color name="text_cyan">#016A7F</color>
+    <color name="text_white">#FFFFFF</color>
     <color name="text_gray">#757575</color>
     <color name="text_gray_dark">#464646</color>
     <color name="category_beauty">#00A074</color>

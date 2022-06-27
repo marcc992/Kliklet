@@ -49,7 +49,6 @@ class ButtonsViewerListAdapter(
         val currentButton = buttonList[position]
 
         holder.itemView.setOnClickListener {
-            // todo: (I+D) cambiar layout para que parezca como seleccionado
             listener.onButtonItemClick(currentButton, position)
         }
 

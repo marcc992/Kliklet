@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import es.marcmauri.kliklet.app.KlikletApp
-import es.marcmauri.kliklet.databinding.FragmentCommercesViewerListBinding
 import es.marcmauri.kliklet.features.commercesviewer.CommercesViewerListMVP
 import es.marcmauri.kliklet.features.commercesviewer.model.entities.ButtonInfo
 import es.marcmauri.kliklet.features.commercesviewer.model.entities.Commerce
@@ -21,6 +20,8 @@ import es.marcmauri.kliklet.features.commercesviewer.view.listener.RecyclerButto
 import es.marcmauri.kliklet.features.commercesviewer.view.listener.RecyclerCategoriesViewerListListener
 import es.marcmauri.kliklet.features.commercesviewer.view.listener.RecyclerCommercesViewerListListener
 import es.marcmauri.kliklet.common.snackBar
+import es.marcmauri.kliklet.databinding.FragmentCommercesViewerListBinding
+import es.marcmauri.kliklet.features.commercesviewer.model.entities.CategoryInfo
 import javax.inject.Inject
 
 
@@ -34,7 +35,7 @@ class CommercesViewerListFragment : Fragment(), CommercesViewerListMVP.View {
     private lateinit var categoriesAdapter: CategoriesViewerListAdapter
     private lateinit var commercesAdapter: CommercesViewerListAdapter
     private var buttonList: ArrayList<ButtonInfo> = ArrayList(0)
-    private var categoryList: ArrayList<String> = ArrayList(0)
+    private var categoryList: ArrayList<CategoryInfo> = ArrayList(0)
     private var commerceList: ArrayList<Commerce> = ArrayList(0)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,8 +81,8 @@ class CommercesViewerListFragment : Fragment(), CommercesViewerListMVP.View {
             CategoriesViewerListAdapter(
                 categoryList,
                 object : RecyclerCategoriesViewerListListener {
-                    override fun onCategoryItemClick(category: String, position: Int) {
-                        presenter.onCategoryItemClick(category)
+                    override fun onCategoryItemClick(category: CategoryInfo, position: Int) {
+                        presenter.onCategoryItemClick(category, position)
                     }
                 })
     }
@@ -100,6 +101,7 @@ class CommercesViewerListFragment : Fragment(), CommercesViewerListMVP.View {
         binding.recyclerViewButtonList.itemAnimator = DefaultItemAnimator()
         binding.recyclerViewButtonList.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            //LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         binding.recyclerViewButtonList.adapter = buttonsAdapter
 
         // Categories recycler view
@@ -115,33 +117,111 @@ class CommercesViewerListFragment : Fragment(), CommercesViewerListMVP.View {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    override fun showButtonList(newButtonsList: List<ButtonInfo>) {
+    private fun setButtonList(newButtonsList: List<ButtonInfo>) {
         // 1. Remove all previous buttons if so
+        val lastButtonsCount = buttonsAdapter.itemCount
         buttonList.clear()
+        buttonsAdapter.notifyItemRangeRemoved(0, lastButtonsCount)
         // 2. Add all new buttons
         buttonList.addAll(newButtonsList)
-        // 3. Notify the adapter with all data at once to avoid fancy view effects
-        buttonsAdapter.notifyDataSetChanged()
+        // 3. Notify the adapter with the new data
+        buttonsAdapter.notifyItemRangeInserted(0, newButtonsList.size)
+    }
+
+    private fun updateButtonList(modifiedButtonsList: List<ButtonInfo>) {
+        modifiedButtonsList.forEachIndexed { position, buttonInfo ->
+            if (buttonList[position] != (buttonInfo)) {
+                // The button is updated only and only the current one is different
+                buttonList[position]= buttonInfo
+                buttonsAdapter.notifyItemChanged(position)
+            }
+        }
+    }
+
+    override fun showButtonList(newButtonsList: List<ButtonInfo>) {
+        if (buttonList.size != newButtonsList.size) {
+            // When the sizes of current button list and the new button list mismatch, then we need
+            // to set the entire button list
+            setButtonList(newButtonsList)
+        } else {
+            // When the sizes are the sem, we just need to update the current buttons
+            updateButtonList(newButtonsList)
+        }
+    }
+
+//    private fun setCategoryList(newCategoryList: List<CategoryInfo>) {
+//        // 1. Remove all previous categories if so
+//        val lastCategoryItemCount = categoriesAdapter.itemCount
+//        categoryList.clear()
+//        categoriesAdapter.notifyItemRangeRemoved(0, -lastCategoryItemCount)
+//        // 2. Add all new categories
+//        categoryList.addAll(newCategoryList)
+//        // 3. Notify the adapter with the new data
+//        categoriesAdapter.notifyItemRangeInserted(0, newCategoryList.size)
+//    }
+
+    private fun setCategoryList(newCategoryList: List<CategoryInfo>) {
+        // 1. Remove all previous categories if so
+        val lastCategoryItemCount = categoriesAdapter.itemCount
+        categoryList.clear()
+        categoriesAdapter.notifyItemRangeRemoved(0, lastCategoryItemCount)
+        // 2. Add all new categories
+        categoryList.addAll(newCategoryList)
+        // 3. Notify the adapter with the new data
+        categoriesAdapter.notifyItemRangeInserted(0, newCategoryList.size)
+
+
+        // 1. Remove all previous categories if so
+        val lastCategoriesCount = categoriesAdapter.itemCount
+        categoryList.clear()
+        categoriesAdapter.notifyItemRangeRemoved(0, lastCategoriesCount)
+        // 2. Add all new categories
+        categoryList.addAll(newCategoryList)
+        // 3. Notify the adapter with the new data
+        categoriesAdapter.notifyItemRangeInserted(0, newCategoryList.size)
+    }
+
+    private fun updateCategoryList(modifiedCategoryList: List<CategoryInfo>) {
+        modifiedCategoryList.forEachIndexed { position, categoryInfo ->
+            if (categoryList[position] != (categoryInfo)) {
+                // The category is updated only and only the current one is different
+                categoryList[position]= categoryInfo
+                categoriesAdapter.notifyItemChanged(position)
+            }
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    override fun showCategoryList(newCategoriesList: List<String>) {
-        if (categoryList.isNotEmpty()) {
-            binding.recyclerViewCategoryList.smoothScrollToPosition(0)
-            categoryList.clear()
-            categoriesAdapter.notifyDataSetChanged()
+    override fun showCategoryList(newCategoryList: List<CategoryInfo>) {
+
+        if (categoryList.size != newCategoryList.size) {
+            // When the sizes of current category list and the new category list mismatch, then we
+            // need to set the entire category list
+            setCategoryList(newCategoryList)
+        } else {
+            // When the sizes are the sem, we just need to update the current buttons
+            updateCategoryList(newCategoryList)
         }
 
-        binding.recyclerViewCategoryList.post {
 
-            // Insert Categories one by one to get fancy view effects
-            newCategoriesList.forEach { category ->
-                categoryList.add(category)
-                binding.recyclerViewCategoryList.post {
-                    categoriesAdapter.notifyItemInserted(categoryList.size - 1)
-                }
-            }
-        }
+
+
+//        if (categoryList.isNotEmpty()) {
+//            binding.recyclerViewCategoryList.smoothScrollToPosition(0)
+//            categoryList.clear()
+//            categoriesAdapter.notifyDataSetChanged()
+//        }
+//
+//        binding.recyclerViewCategoryList.post {
+//
+//            // Insert Categories one by one to get fancy view effects
+//            newCategoryList.forEach { category ->
+//                categoryList.add(category)
+//                binding.recyclerViewCategoryList.post {
+//                    categoriesAdapter.notifyItemInserted(categoryList.size - 1)
+//                }
+//            }
+//        }
     }
 
     @SuppressLint("NotifyDataSetChanged")

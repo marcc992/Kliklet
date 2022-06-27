@@ -1,5 +1,7 @@
 package es.marcmauri.kliklet.features.commercesviewer.view.listener
 
+import es.marcmauri.kliklet.features.commercesviewer.model.entities.CategoryInfo
+
 interface RecyclerCategoriesViewerListListener {
-    fun onCategoryItemClick(category: String, position: Int)
+    fun onCategoryItemClick(category: CategoryInfo, position: Int)
 }

@@ -2,6 +2,7 @@ package es.marcmauri.kliklet.features.commercesviewer
 
 import android.content.Context
 import es.marcmauri.kliklet.features.commercesviewer.model.entities.ButtonInfo
+import es.marcmauri.kliklet.features.commercesviewer.model.entities.CategoryInfo
 import es.marcmauri.kliklet.features.commercesviewer.model.entities.Commerce
 
 interface CommercesViewerListMVP {
@@ -15,7 +16,7 @@ interface CommercesViewerListMVP {
     interface View {
         fun configureUI()
         fun showButtonList(newButtonsList: List<ButtonInfo>)
-        fun showCategoryList(newCategoriesList: List<String>)
+        fun showCategoryList(newCategoriesList: List<CategoryInfo>)
         fun showCommerceList(newCommerceList: List<Commerce>)
         fun goToCommerceDetails(commerce: Commerce)
         fun showLoading()
@@ -28,7 +29,7 @@ interface CommercesViewerListMVP {
         fun setView(view: View)
         fun onFragmentReady()
         fun onButtonItemClick(buttonInfo: ButtonInfo, position: Int)
-        fun onCategoryItemClick(category: String)
+        fun onCategoryItemClick(category: CategoryInfo, position: Int)
         fun onCommerceItemClick(commerce: Commerce)
     }
 }
