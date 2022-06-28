@@ -5,6 +5,8 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
+import androidx.core.content.PermissionChecker.PERMISSION_GRANTED
 import androidx.fragment.app.FragmentActivity
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
@@ -102,16 +104,20 @@ fun Activity.checkGoogleServicesAvailability() = GoogleApiAvailability.getInstan
 
 /**
  * This method gets the last known location from the user and stores it to the user preferences.
- * It must be called just after the user location permissions request, either FINE or COARSE.
+ * If both of the requried permissions have refused, then this method do nothing.
  */
-@SuppressLint("MissingPermission") //todo
+@SuppressLint("MissingPermission")
 fun Activity.getLastKnownLocation() {
-    LocationServices.getFusedLocationProviderClient(this).lastLocation
-        .addOnSuccessListener { location ->
-            if (location != null) {
-                prefs.lastLocation = LatLng(location.latitude, location.longitude)
+    if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PERMISSION_GRANTED
+        || ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PERMISSION_GRANTED)
+    {
+        LocationServices.getFusedLocationProviderClient(this).lastLocation
+            .addOnSuccessListener { location ->
+                if (location != null) {
+                    prefs.lastLocation = LatLng(location.latitude, location.longitude)
+                }
             }
-        }
+    }
 }
 
 /**

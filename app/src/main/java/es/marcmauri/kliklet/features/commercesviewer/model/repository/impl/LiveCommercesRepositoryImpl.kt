@@ -38,6 +38,7 @@ class LiveCommercesRepositoryImpl(private val commercesApiService: CommercesApiS
                                 || apiCommerce.name!!.lowercase().contains("*cerrado")
                                 || apiCommerce.name!!.lowercase().contains("* copy")
                                 || apiCommerce.name!!.lowercase().contains("*copy")
+                                || apiCommerce.name!!.lowercase().contains("copy*")
                     }
                     .map { apiCommerce ->
                         Commerce(
