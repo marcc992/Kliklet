@@ -1,12 +1,12 @@
 package es.marcmauri.kliklet.features.commercesviewer.model.repository.impl
 
+import es.marcmauri.kliklet.common.Constants
 import es.marcmauri.kliklet.features.commercesviewer.model.entities.Address
 import es.marcmauri.kliklet.features.commercesviewer.model.entities.Commerce
 import es.marcmauri.kliklet.features.commercesviewer.model.entities.Logo
 import es.marcmauri.kliklet.features.commercesviewer.model.entities.Thumbnails
 import es.marcmauri.kliklet.features.commercesviewer.model.repository.CommercesRepository
 import es.marcmauri.kliklet.retrofit.CommercesApiService
-import es.marcmauri.kliklet.common.Constants
 
 class LiveCommercesRepositoryImpl(private val commercesApiService: CommercesApiService) :
     CommercesRepository {
@@ -36,6 +36,8 @@ class LiveCommercesRepositoryImpl(private val commercesApiService: CommercesApiS
                                 || apiCommerce.name!!.lowercase().contains("*antiguo")
                                 || apiCommerce.name!!.lowercase().contains("* cerrado")
                                 || apiCommerce.name!!.lowercase().contains("*cerrado")
+                                || apiCommerce.name!!.lowercase().contains("* copy")
+                                || apiCommerce.name!!.lowercase().contains("*copy")
                     }
                     .map { apiCommerce ->
                         Commerce(

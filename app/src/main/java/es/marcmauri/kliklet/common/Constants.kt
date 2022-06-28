@@ -15,7 +15,6 @@ class Constants {
     class Literals {
         companion object {
             const val EMPTY = ""
-            const val UNDEFINED = "Undefined"
         }
     }
 

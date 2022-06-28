@@ -11,6 +11,7 @@ import com.google.android.gms.maps.model.LatLng
 import es.marcmauri.kliklet.R
 import es.marcmauri.kliklet.app.prefs
 import es.marcmauri.kliklet.common.Constants
+import es.marcmauri.kliklet.common.Constants.Literals.Companion.EMPTY
 import es.marcmauri.kliklet.common.distanceToInKm
 import es.marcmauri.kliklet.databinding.RecyclerCommerceListItemBinding
 import es.marcmauri.kliklet.features.commercesviewer.model.entities.Commerce
@@ -93,7 +94,7 @@ class CommercesViewerListAdapter(
             .load(AppCompatResources.getDrawable(context, R.drawable.ic_arrow_right_white))
             .into(holder.ivArrowRight)
 
-        var distance = "- km"
+        var distance = EMPTY
         if (prefs.isLastLocationReady() && currentCommerce.latitude != null && currentCommerce.longitude != null) {
             val origin = prefs.lastLocation
             val destination = LatLng(currentCommerce.latitude, currentCommerce.longitude)

@@ -71,6 +71,13 @@ fun String.asSentence() =
     else this
 
 /**
+ * Convert the first char of the current String to uppercase
+ */
+fun String.capitalizeFirst() =
+    if (this.isNotEmpty()) this.first().uppercaseChar() + this.substring(1)
+    else this
+
+/**
  * Convert the current double from Degrees to Radian
  */
 fun Double.deg2rad() = this * Math.PI / 180.0

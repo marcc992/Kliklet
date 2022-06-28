@@ -19,6 +19,7 @@
     <string name="error_message_google_maps_not_found">No se encontró Google Maps!</string>
     <string name="error_message_google_services_not_available">Los servicios de Google no están permitidos en su dispositivo, por lo que no podrá disfrutar de todas las funciones</string>
     <string name="error_message_commerce_not_loaded">No se pudo cargar el comercio seleccionado</string>
+    <string name="error_message_commerce_not_available">No disponible</string>
 
     <string name="content_description_image_commerce_header">Imagen de cabecera de un comercio</string>
     <string name="content_description_image_commerce_logo">Logotipo del comercio</string>

@@ -17,6 +17,7 @@
     <string name="error_message_google_maps_not_found">No s\'ha trobat Google Maps!</string>
     <string name="error_message_google_services_not_available">Els serveis de Google no estan permesos al dispositiu, per la qual cosa no podreu gaudir de totes les funcionalitats</string>
     <string name="error_message_commerce_not_loaded">No s\'ha pogut carregar el comerç seleccionat</string>
+    <string name="error_message_commerce_not_available">No disponible</string>
 
     <string name="content_description_image_commerce_header">Imatge de la capçalera del comerç</string>
     <string name="content_description_image_commerce_logo">Logotip del comerç</string>

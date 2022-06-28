@@ -15,8 +15,8 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import es.marcmauri.kliklet.R
 import es.marcmauri.kliklet.app.KlikletApp
-import es.marcmauri.kliklet.common.Constants.Literals.Companion.UNDEFINED
-import es.marcmauri.kliklet.common.asSentence
+import es.marcmauri.kliklet.common.Constants.Literals.Companion.EMPTY
+import es.marcmauri.kliklet.common.capitalizeFirst
 import es.marcmauri.kliklet.common.snackBar
 import es.marcmauri.kliklet.databinding.FragmentCommercesViewerDetailBinding
 import es.marcmauri.kliklet.features.commercesviewer.CommercesViewerDetailMVP
@@ -108,18 +108,21 @@ class CommercesViewerDetailFragment : Fragment(), CommercesViewerDetailMVP.View 
 
         val commerceAddressText =
             if (commerce.address?.street == null || commerce.address.city == null) {
-                UNDEFINED
+                EMPTY
             } else {
                 """
-                    ${commerce.address.street.asSentence()}
-                    ${commerce.address.city.asSentence()}
+                    ${commerce.address.street.capitalizeFirst()}
+                    ${commerce.address.city.capitalizeFirst()}
                 """.trimIndent()
             }
         binding.tvMapDetailSubtitle.text = commerceAddressText
 
         val latLongText = "${commerce.latitude}, ${commerce.longitude}"
         binding.tvMapDetailCoords.text = latLongText
-        binding.tvCommerceDetailedInfo.text = commerce.description
+
+        binding.tvCommerceDetailedInfo.text =
+            if (!commerce.description.isNullOrBlank()) commerce.description.capitalizeFirst()
+            else getString(R.string.error_message_commerce_not_available)
 
         // Add the marker on the map
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
