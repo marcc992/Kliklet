@@ -15,7 +15,7 @@ import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-private const val DEFAULT_DISTANCE = 10
+private const val DEFAULT_DISTANCE = 1
 private const val POS_BUTTON_FIRST = 0
 private const val UNSELECTED_CATEGORY = -1
 
@@ -31,6 +31,7 @@ class CommercesViewerListPresenter(val model: CommercesViewerListMVP.Model) :
 
     @Nullable
     private var view: CommercesViewerListMVP.View? = null
+    private var selectedDistance = DEFAULT_DISTANCE
     private var selectedButton = 0 // The first button is selected on init
     private var selectedCategory = UNSELECTED_CATEGORY // No category button selected on init
     private var allCommercesCount = 0 // This var is updated the first time we ask for commerces
@@ -81,7 +82,8 @@ class CommercesViewerListPresenter(val model: CommercesViewerListMVP.Model) :
 
         buttonInfoList.add(
             ButtonInfo(
-                description = context!!.getString(R.string.recycler_view_button_info_less_distance),
+                description = context!!.getString(R.string.recycler_view_button_info_less_distance)
+                    .format(selectedDistance),
                 count = allCommercesByDistanceCount,
                 selected = false
             )
@@ -155,6 +157,9 @@ class CommercesViewerListPresenter(val model: CommercesViewerListMVP.Model) :
                 view?.showLoading()
             }
 
+            // Set this value to determine what to show in the nearest commerces button
+            selectedDistance = distance
+
             val commerceList = when (type) {
                 CommerceRequestType.ALL -> model.getAllCommerces()
                 CommerceRequestType.NEAREST -> model.getCommercesByDistance(distance)
@@ -193,22 +198,37 @@ class CommercesViewerListPresenter(val model: CommercesViewerListMVP.Model) :
             when (position) {
                 1 -> {
                     if (prefs.isLastLocationReady()) {
-                        // On nearest click button, when location is available, this option
-                        // can be used => The second buttons will be selected and category selection,
-                        // removed.
-                        view?.changeSelectedButton(selectedButton)
-                        selectedCategory = UNSELECTED_CATEGORY
-                        view?.changeSelectedCategory(selectedCategory)
-                        // Then get the requested data
-                        getCommercesFromRepository(type = CommerceRequestType.NEAREST)
+
+                        // We need to check if some commerces nearest to the user exist
+                        if (allCommercesByDistanceCount > 0) {
+                            // On nearest click button, when location is available, this option
+                            // can be used. Valid choice => Change the button selected
+                            view?.changeSelectedButton(selectedButton)
+
+                            // Also, any category is unselected because we are showing all comerces near
+                            // the user
+                            selectedCategory = UNSELECTED_CATEGORY
+                            view?.changeSelectedCategory(selectedCategory)
+
+                            // Then get the requested data
+                            getCommercesFromRepository(type = CommerceRequestType.NEAREST)
+
+                        } else {
+                            // Invalid choice => Not change the button selected and restore the flag
+                            selectedButton = POS_BUTTON_FIRST
+                            view?.showError(R.string.error_message_no_commerces_near_available)
+                        }
+
                     } else {
-                        // Location disabled! In this case the button won't be selected, so we
-                        // need to restore the selectedButton as well
+                        // Location disabled!
+                        // Invalid choice => Not change the button selected and restore the flag
                         selectedButton = POS_BUTTON_FIRST
                         view?.showError(R.string.error_message_location_disabled)
                     }
                 }
                 else -> {
+                    // Valid choice => Change the button selected and show all the commerces
+                    view?.changeSelectedButton(selectedButton)
                     getCommercesFromRepository(type = CommerceRequestType.ALL)
                 }
             }

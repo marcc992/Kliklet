@@ -7,9 +7,10 @@
     <string name="fragment_commerce_detail_title_about_commerce">Sobre el comerç</string>
 
     <string name="recycler_view_button_info_commerces">Comerços</string>
-    <string name="recycler_view_button_info_less_distance">A menys de 10 km</string>
+    <string name="recycler_view_button_info_less_distance">A menys de %d km</string>
 
     <string name="error_message_no_commerces_available">No hi ha comerços disponibles en aquest moment</string>
+    <string name="error_message_no_commerces_near_available">No hi ha comerços propers en aquest moment</string>
     <string name="error_message_location_disabled">No podeu utilitzar aquesta opció amb la ubicació deshabilitada…</string>
     <string name="error_message_location_not_allowed">No vas permetre la ubicació, per la qual cosa no podràs gaudir de totes les funcionalitats</string>
     <string name="error_message_location_unreachable">Aquest comerç no té enregistrada la ubicació</string>

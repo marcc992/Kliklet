@@ -9,9 +9,10 @@
     <string name="fragment_commerce_detail_title_about_commerce">Sobre el comercio</string>
 
     <string name="recycler_view_button_info_commerces">Comercios</string>
-    <string name="recycler_view_button_info_less_distance">A menos de 10 km</string>
+    <string name="recycler_view_button_info_less_distance">A menos de %d km</string>
 
     <string name="error_message_no_commerces_available">No hay comercios disponibles en este momento</string>
+    <string name="error_message_no_commerces_near_available">No hay comercios cercanos en este momento</string>
     <string name="error_message_location_disabled">No puedes usar esta opción con la ubicación deshabilitada…</string>
     <string name="error_message_location_not_allowed">No permitiste la ubicación, por lo que no podrás disfrutar de todas las funciones</string>
     <string name="error_message_location_unreachable">Este comercio no tiene su registro de ubicación</string>

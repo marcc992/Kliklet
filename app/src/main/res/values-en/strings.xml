@@ -7,9 +7,10 @@
     <string name="fragment_commerce_detail_title_about_commerce">About the shop</string>
 
     <string name="recycler_view_button_info_commerces">Shops</string>
-    <string name="recycler_view_button_info_less_distance">Less than 10 km</string>
+    <string name="recycler_view_button_info_less_distance">Less than %d km</string>
 
     <string name="error_message_no_commerces_available">No shops available right now</string>
+    <string name="error_message_no_commerces_near_available">No near shops available right now</string>
     <string name="error_message_location_disabled">You can\'t use this option with location disabled…</string>
     <string name="error_message_location_not_allowed">You didn\'t allow the location, so you will not be able to enjoy all the features</string>
     <string name="error_message_location_unreachable">This commerce does not have its location record</string>
