@@ -25,7 +25,7 @@ import kotlin.math.sin
  *
  * @param message: Text to show
  * @param view: View where place the message
- * @param duration: (Optional) Duration of the message (by default is Snackbar.LENGTH_SHORT)
+ * @param duration: (Optional) Duration of the message (by default is SnackBar.LENGTH_SHORT)
  * @param action: (Optional) Text for the action button. If so, then give the event actionEvt
  * @param actionEvt: (Optional) Code to execute when the action button is clicked
  */
@@ -108,7 +108,7 @@ fun Activity.getLastKnownLocation() {
 }
 
 /**
- * This funct checks if the user has already grant the location permissions. If not, then it asks
+ * This method checks if the user has already grant the location permissions. If not, then it asks
  * for them.
  *
  * @param onGrantedEvt: Code to execute when permissions were granted

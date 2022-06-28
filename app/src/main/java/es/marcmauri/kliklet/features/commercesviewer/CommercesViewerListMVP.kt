@@ -16,7 +16,7 @@ interface CommercesViewerListMVP {
     interface View {
         fun configureUI()
         fun showButtonList(newButtonsList: List<ButtonInfo>)
-        fun showCategoryList(newCategoriesList: List<CategoryInfo>)
+        fun showCategoryList(newCategoryList: List<CategoryInfo>)
         fun showCommerceList(newCommerceList: List<Commerce>)
         fun changeSelectedButton(selectedBtnPosition: Int)
         fun changeButtonCount(btnPosition: Int, count: Int)

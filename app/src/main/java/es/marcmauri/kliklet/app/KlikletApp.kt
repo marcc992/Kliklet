@@ -1,7 +1,6 @@
 package es.marcmauri.kliklet.app
 
 import android.app.Application
-import android.content.Context
 import es.marcmauri.kliklet.common.SharedPreferencesManager
 import es.marcmauri.kliklet.features.commercesviewer.CommercesViewerModule
 import es.marcmauri.kliklet.retrofit.CommercesApiModule

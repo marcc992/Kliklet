@@ -10,7 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 @Module
 class CommercesApiModule {
 
-    val BASE_URL = "https://prod.klikin.com/"
+    private val BASE_URL = "https://prod.klikin.com/"
 
     @Provides
     fun provideHttpClient(): OkHttpClient {

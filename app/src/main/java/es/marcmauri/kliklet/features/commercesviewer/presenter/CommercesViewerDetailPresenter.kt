@@ -22,7 +22,7 @@ class CommercesViewerDetailPresenter :
     }
 
     /**
-     * Funct called when the Fragment is ready to configure the next steps.
+     * Method called when the Fragment is ready to configure the next steps.
      */
     override fun onFragmentReady() {
         view?.configureUI()
@@ -30,7 +30,7 @@ class CommercesViewerDetailPresenter :
     }
 
     /**
-     * Funct called to get the selected Commerce by user to show its detail.
+     * Method called to get the selected Commerce by user to show its detail.
      * If something goes wrong, an error is shown and the app returns to the previous list
      */
     private fun getCommerceFromExtras() {

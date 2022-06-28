@@ -21,8 +21,7 @@ data class Commerce(
         parcel.readParcelable(Logo::class.java.classLoader),
         parcel.readValue(Double::class.java.classLoader) as? Double,
         parcel.readValue(Double::class.java.classLoader) as? Double
-    ) {
-    }
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(name)

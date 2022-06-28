@@ -56,7 +56,7 @@ class CommercesViewerListPresenter(val model: CommercesViewerListMVP.Model) :
     }
 
     /**
-     * Funct called when the Fragment is ready to configure the next steps.
+     * Method called when the Fragment is ready to configure the next steps.
      */
     override fun onFragmentReady() {
         view?.configureUI()
@@ -64,7 +64,7 @@ class CommercesViewerListPresenter(val model: CommercesViewerListMVP.Model) :
     }
 
     /**
-     * This suspend funct is called once to configure the two buttons.
+     * This suspend method is called once to configure the two buttons.
      * It gets info about all commerces and near to the user to populate the buttons.
      */
     private suspend fun initButtonInfoList() {
@@ -89,11 +89,11 @@ class CommercesViewerListPresenter(val model: CommercesViewerListMVP.Model) :
     }
 
     /**
-     * This funct uses the commerce list passes by params to determine all the different categories
+     * This method uses the commerce list passes by params to determine all the different categories
      * available.
      * For now, it is called once when the init display data is loading.
      *
-     * @param commerceList A nullable list of Commerce. In case of null or emptly the categories
+     * @param commerceList A nullable list of Commerce. In case of null or empty the categories
      * found will be 0.
      *
      * @return It returns an ArrayList which contains all the unique Categories found.
@@ -110,8 +110,8 @@ class CommercesViewerListPresenter(val model: CommercesViewerListMVP.Model) :
             } ?: ArrayList(0)
 
     /**
-     * This funct uses a coroutine to be allowed to fetch all the requiered data from server (or
-     * memory en case the repository has been retreived the data before) for the initial display
+     * This method uses a coroutine to be allowed to fetch all the required data from server (or
+     * memory en case the repository has been fetched the data before) for the initial display
      * data which will be showed at first.
      */
     private fun showInitDisplayData() {
@@ -137,7 +137,7 @@ class CommercesViewerListPresenter(val model: CommercesViewerListMVP.Model) :
     }
 
     /**
-     * This funct uses a coroutine to get the requested commerces by the user, either ALL, the
+     * This method uses a coroutine to get the requested commerces by the user, either ALL, the
      * NEAREST or by CATEGORY. Depends on what kind of data is requested, the buttons and
      * categories will be set properly
      *
@@ -181,7 +181,7 @@ class CommercesViewerListPresenter(val model: CommercesViewerListMVP.Model) :
     }
 
     /**
-     * This funct is called when a button has clicked
+     * This method is called when a button has clicked
      *
      * @param buttonInfo: The button clicked
      * @param position: The position of the button in its recycler view
@@ -194,7 +194,7 @@ class CommercesViewerListPresenter(val model: CommercesViewerListMVP.Model) :
                 1 -> {
                     if (prefs.isLastLocationReady()) {
                         // On nearest click button, when location is available, this option
-                        // can be used => The second buttos will be selected and cateogry selection,
+                        // can be used => The second buttons will be selected and category selection,
                         // removed.
                         view?.changeSelectedButton(selectedButton)
                         selectedCategory = UNSELECTED_CATEGORY
@@ -216,7 +216,7 @@ class CommercesViewerListPresenter(val model: CommercesViewerListMVP.Model) :
     }
 
     /**
-     * This funct is called when a category has clicked
+     * This method is called when a category has clicked
      *
      * @param category: The category clicked
      * @param position: The position of the category in its recycler view
@@ -246,7 +246,7 @@ class CommercesViewerListPresenter(val model: CommercesViewerListMVP.Model) :
     }
 
     /**
-     * This funct call the view method to open the detail of the selected Commerce
+     * This method call the view method to open the detail of the selected Commerce
      *
      * @param commerce: Selected commerce by user
      */

@@ -12,8 +12,7 @@ data class Logo(
         parcel.readParcelable(Thumbnails::class.java.classLoader),
         parcel.readString(),
         parcel.readString()
-    ) {
-    }
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeParcelable(thumbnails, flags)

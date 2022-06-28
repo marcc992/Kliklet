@@ -11,7 +11,7 @@ class SharedPreferencesManager(context: Context) {
     private val KEY_LAST_LATITUDE = "last_latitude"
     private val KEY_LAST_LONGITUDE = "last_longitude"
 
-    // Preferences's instance
+    // Preferences instance
     private val preferences =
         context.getSharedPreferences(PREFERENCES_FILE_NAME, Context.MODE_PRIVATE)
 

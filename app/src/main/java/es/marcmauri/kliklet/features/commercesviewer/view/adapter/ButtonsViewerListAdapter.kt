@@ -56,11 +56,11 @@ class ButtonsViewerListAdapter(
         when (holder.itemViewType) {
             0 -> {
                 (holder as ViewHolderSelected).tvDescription.text = currentButton.description
-                (holder as ViewHolderSelected).tvCount.text = currentButton.count.toString()
+                holder.tvCount.text = currentButton.count.toString()
             }
             else -> {
                 (holder as ViewHolder).tvDescription.text = currentButton.description
-                (holder as ViewHolder).tvCount.text = currentButton.count.toString()
+                holder.tvCount.text = currentButton.count.toString()
             }
         }
     }
