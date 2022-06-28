@@ -1,20 +1,35 @@
 package es.marcmauri.kliklet.common
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.view.View
-import android.widget.Toast
-import androidx.fragment.app.Fragment
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.FragmentActivity
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.snackbar.Snackbar
+import es.marcmauri.kliklet.app.prefs
 import kotlin.math.acos
 import kotlin.math.cos
 import kotlin.math.sin
 
-/* Ext. functions about common functionalities */
+/*
+    COMMON FUNCTIONALITIES
+*/
 
-private fun showSnackBar(
+/**
+ * Show a SnackBar.
+ *
+ * @param message: Text to show
+ * @param view: View where place the message
+ * @param duration: (Optional) Duration of the message (by default is Snackbar.LENGTH_SHORT)
+ * @param action: (Optional) Text for the action button. If so, then give the event actionEvt
+ * @param actionEvt: (Optional) Code to execute when the action button is clicked
+ */
+fun snackBar(
     message: CharSequence,
     view: View,
     duration: Int = Snackbar.LENGTH_SHORT,
@@ -28,36 +43,11 @@ private fun showSnackBar(
     snackBar.show()
 }
 
-fun Activity.snackBar(
-    message: CharSequence,
-    view: View,
-    duration: Int = Snackbar.LENGTH_SHORT,
-    action: String? = null,
-    actionEvt: (v: View) -> Unit = {}
-) = showSnackBar(message, view, duration, action, actionEvt)
-
-fun Fragment.snackBar(
-    message: CharSequence,
-    view: View,
-    duration: Int = Snackbar.LENGTH_SHORT,
-    action: String? = null,
-    actionEvt: (v: View) -> Unit = {}
-) = showSnackBar(message, view, duration, action, actionEvt)
-
-fun String.asSentence() =
-    if (this.isNotEmpty()) this.first().uppercaseChar() + this.substring(1).lowercase()
-    else this
-
-
-fun Double.deg2rad() = this * Math.PI / 180.0
-
-fun Double.rad2deg() = this * 180.0 / Math.PI
-
 /**
- * This method return the distance in Kilometers between 2 positions LatLng
+ * This method return the distance in Kilometers between itself and the location passed by param.
  *
- * @param destination: LatLng with the destination point
- * @return The distance in Kilometers
+ * @param destination: LatLng with the destination point.
+ * @return The distance to the 'destination' in Kilometers.
  */
 fun LatLng.distanceToInKm(destination: LatLng): Double {
     val origin = this
@@ -69,7 +59,91 @@ fun LatLng.distanceToInKm(destination: LatLng): Double {
 }
 
 
-/* Ext. functions about GServices and permissions */
+/*
+    PRIMITIVES
+*/
 
-fun Activity.checkGoogleServicesAvailable() = GoogleApiAvailability.getInstance()
+/**
+ * Convert the current String in a Sentence format
+ */
+fun String.asSentence() =
+    if (this.isNotEmpty()) this.first().uppercaseChar() + this.substring(1).lowercase()
+    else this
+
+/**
+ * Convert the current double from Degrees to Radian
+ */
+fun Double.deg2rad() = this * Math.PI / 180.0
+
+/**
+ * Convert the current double from Radian to Degrees
+ */
+fun Double.rad2deg() = this * 180.0 / Math.PI
+
+
+/*
+    GOOGLE SERVICES AND PERMISSIONS
+*/
+
+/**
+ * It checks the availability of Google Services on the current device.
+ *
+ * @return A boolean TRUE if GServices are available. FALSE in the other case.
+ */
+fun Activity.checkGoogleServicesAvailability() = GoogleApiAvailability.getInstance()
     .isGooglePlayServicesAvailable(this) == ConnectionResult.SUCCESS
+
+/**
+ * This method gets the last known location from the user and stores it to the user preferences.
+ * It must be called just after the user location permissions request, either FINE or COARSE.
+ */
+@SuppressLint("MissingPermission") //todo
+fun Activity.getLastKnownLocation() {
+    LocationServices.getFusedLocationProviderClient(this).lastLocation
+        .addOnSuccessListener { location ->
+            if (location != null) {
+                prefs.lastLocation = LatLng(location.latitude, location.longitude)
+            }
+        }
+}
+
+/**
+ * This funct checks if the user has already grant the location permissions. If not, then it asks
+ * for them.
+ *
+ * @param onGrantedEvt: Code to execute when permissions were granted
+ * @param onRefusedEvt: Code to execute when permissions were refused
+ * @param onGServicesNotAvailable: Code to execute when no Google Services available
+ */
+fun FragmentActivity.checkLocationPermissions(
+    onGrantedEvt: () -> Unit,
+    onRefusedEvt: () -> Unit,
+    onGServicesNotAvailable: () -> Unit
+) {
+    if (checkGoogleServicesAvailability()) {
+        val locationPermissionRequest = this.registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) { permissions ->
+
+            val locationPermissionsGranted = when {
+                permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false -> true
+                permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false -> true
+                else -> false
+            }
+
+            if (locationPermissionsGranted)
+                onGrantedEvt()
+            else
+                onRefusedEvt()
+        }
+
+        locationPermissionRequest.launch(
+            arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            )
+        )
+    } else {
+        onGServicesNotAvailable()
+    }
+}
