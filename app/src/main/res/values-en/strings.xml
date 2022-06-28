@@ -16,4 +16,10 @@
     <string name="error_message_google_maps_not_found">Google Maps was not found!</string>
     <string name="error_message_google_services_not_available">Google services are not allowed on your device, so you will not be able to enjoy all the features</string>
     <string name="error_message_commerce_not_loaded">The selected commerce could not be loaded</string>
+
+    <string name="content_description_image_commerce_header">Commerce header image</string>
+    <string name="content_description_image_commerce_logo">Commerce logo</string>
+    <string name="content_description_go_to_commerce_detail">Go to commerce detail</string>
+    <string name="content_description_button_back">Back button</string>
+    <string name="content_description_category_logo">Category logo</string>
 </resources>
