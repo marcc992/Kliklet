@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">Kliklet</string>
-
     <string name="activity_commerces_viewer_toolbar_title">Llistat de comerços</string>
 
     <string name="fragment_commerce_detail_title_location">Localització</string>
