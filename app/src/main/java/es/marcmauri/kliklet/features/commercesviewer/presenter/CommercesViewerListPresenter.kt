@@ -189,18 +189,22 @@ class CommercesViewerListPresenter(val model: CommercesViewerListMVP.Model) :
     override fun onButtonItemClick(buttonInfo: ButtonInfo, position: Int) {
         if (selectedButton != position) {
             selectedButton = position
-            view?.changeSelectedButton(selectedButton)
 
             when (position) {
                 1 -> {
                     if (prefs.isLastLocationReady()) {
-                        // On nearest commerces button click, the selected category is unselected
+                        // On nearest click button, when location is available, this option
+                        // can be used => The second buttos will be selected and cateogry selection,
+                        // removed.
+                        view?.changeSelectedButton(selectedButton)
                         selectedCategory = UNSELECTED_CATEGORY
                         view?.changeSelectedCategory(selectedCategory)
                         // Then get the requested data
                         getCommercesFromRepository(type = CommerceRequestType.NEAREST)
                     } else {
-                        // Location disabled!
+                        // Location disabled! In this case the button won't be selected, so we
+                        // need to restore the selectedButton as well
+                        selectedButton = POS_BUTTON_FIRST
                         view?.showError(R.string.error_message_location_disabled)
                     }
                 }
