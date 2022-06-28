@@ -1,17 +1,26 @@
 package es.marcmauri.kliklet.app
 
 import android.app.Application
-import es.marcmauri.kliklet.features.stores.StoresModule
+import es.marcmauri.kliklet.common.SharedPreferencesManager
+import es.marcmauri.kliklet.features.commercesviewer.CommercesViewerModule
+import es.marcmauri.kliklet.retrofit.CommercesApiModule
+
+val prefs: SharedPreferencesManager by lazy { KlikletApp.prefs!! }
 
 class KlikletApp : Application() {
+
+    companion object {
+        var prefs: SharedPreferencesManager? = null
+    }
 
     private lateinit var component: ApplicationComponent
 
     override fun onCreate() {
         super.onCreate()
-
+        prefs = SharedPreferencesManager(applicationContext)
         component = DaggerApplicationComponent.builder()
-            .storesModule(StoresModule())
+            .commercesViewerModule(CommercesViewerModule())
+            .commercesApiModule(CommercesApiModule())
             .build()
     }
 

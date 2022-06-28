@@ -1,3 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Kliklet</string>
+    <string name="app_name" translatable="false">Kliklet</string>
+
+    <string name="activity_commerces_viewer_toolbar_title">Listado de comercios</string>
+
+    <string name="fragment_commerce_detail_title_location">Localización</string>
+    <string name="fragment_commerce_detail_title_bring_me_there">Llévame aquí</string>
+    <string name="fragment_commerce_detail_title_about_commerce">Sobre el comercio</string>
+
+    <string name="recycler_view_button_info_commerces">Comercios</string>
+    <string name="recycler_view_button_info_less_distance">A menos de %d km</string>
+
+    <string name="error_message_no_commerces_available">No hay comercios disponibles en este momento</string>
+    <string name="error_message_no_commerces_near_available">No hay comercios cercanos en este momento</string>
+    <string name="error_message_location_disabled">No puedes usar esta opción con la ubicación deshabilitada…</string>
+    <string name="error_message_location_not_allowed">No permitiste la ubicación, por lo que no podrás disfrutar de todas las funciones</string>
+    <string name="error_message_location_unreachable">Este comercio no tiene su registro de ubicación</string>
+    <string name="error_message_google_maps_not_found">No se encontró Google Maps!</string>
+    <string name="error_message_google_services_not_available">Los servicios de Google no están permitidos en su dispositivo, por lo que no podrá disfrutar de todas las funciones</string>
+    <string name="error_message_commerce_not_loaded">No se pudo cargar el comercio seleccionado</string>
+    <string name="error_message_commerce_not_available">No disponible</string>
+
+    <string name="content_description_image_commerce_header">Imagen de cabecera de un comercio</string>
+    <string name="content_description_image_commerce_logo">Logotipo del comercio</string>
+    <string name="content_description_go_to_commerce_detail">Ir al detalle del comercio</string>
+    <string name="content_description_button_back">Botón volver atrás</string>
+    <string name="content_description_category_logo">Logotipo de la categoria</string>
 </resources>
