@@ -48,7 +48,7 @@
                 android:layout_marginEnd="@dimen/margin_medium"
                 android:text="250m."
                 android:textColor="@color/white"
-                android:textSize="@dimen/text_size_medium"
+                android:textSize="@dimen/text_size_big"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/iv_arrowRight"
                 app:layout_constraintEnd_toStartOf="@+id/iv_arrowRight"

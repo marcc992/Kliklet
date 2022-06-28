@@ -101,7 +101,7 @@ class CommercesViewerListAdapter(
             distance = if (origin.distanceToInKm(destination).toInt() >= 10) {
                 "${String.format("%.2f", origin.distanceToInKm(destination))} km"
             } else {
-                "${String.format("%.0f", origin.distanceToInKm(destination) * 1000)} m."
+                "${String.format("%.0f", origin.distanceToInKm(destination) * 1000)}m."
             }
         }
         holder.tvCommerceDistance.text = distance
